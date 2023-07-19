@@ -8,7 +8,7 @@
         </div>
         <div class="col-sm-2 dropdown form-group hidden">
             <button type="button" class="btn btn-secondary ms-choice" data-toggle="dropdown">Pays</button>
-            <ul id="inCountriesFilter" class="menu dropdown-menu hidden">
+            <ul id="inCountriesFilter" class="menu dropdown-menu hidden" >
                 <li class="dropdown-item"><label><a href="#" class="show-all countries">Tous les pays</a></label></li>
             </ul>
         </div>
@@ -27,6 +27,7 @@
             </button>
         </div>
     </div>
-
+</div>
+<div id="in-table-content">
 
 </div>

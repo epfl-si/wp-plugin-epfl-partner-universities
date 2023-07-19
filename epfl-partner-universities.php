@@ -11,8 +11,7 @@ function epfl_partner_universities_process_shortcode()
 {
     ob_start();
     wp_enqueue_style( 'epfl_partner_universities_style', plugin_dir_url(__FILE__).'css/styles.css', [], '2.1');
-    //wp_enqueue_script( 'epfl_partner_universities_script', plugin_dir_url(__FILE__).'js/script.js' );
-
+    ?><script><?php require_once("js/script.js");?></script><?php
     include('page_list.php');
 
     $hostname = "https://isa.epfl.ch/";
@@ -20,7 +19,6 @@ function epfl_partner_universities_process_shortcode()
 
     $partners = call_service($partnersUrl);
     if ($partners['httpCode'] === 200) {
-        //$partners_json = json_decode($partners['response'], true);
         getPartners($partners['response']);
         initPlacesFilter($hostname);
     }else{
@@ -53,12 +51,8 @@ function initPlacesFilter($hostname){
     if ($places['httpCode'] === 200) {
         $placesJson = $places['response'];
 
-        $urlscript = plugin_dir_url(__FILE__) . 'js/script.js';
-
        ?>
-        <script src="<?php echo $urlscript; ?>">
-
-
+        <script>
             placesJson = <?php echo $placesJson; ?>;
 
             /* Create the region menu */
@@ -141,26 +135,6 @@ function initPlacesFilter($hostname){
 function getPartners($jdata){
     ?>
         <script>
-            function lang() {
-                var language = "fr";
-                // if($('#in-enterprise-list').hasClass('en')) {
-                //     language="en";
-                // } else {
-                //     language="fr";
-                // }
-                return language;
-            }
-
-
-            function translate(str) {
-                if (typeof str !== 'undefined') {
-                    // the variable is defined
-                    return str.normalize('NFD').toLowerCase().replace(/ /g,"-").replace(/[\u0300-\u036f]/g, "");
-                } else {
-                    return "";
-                }
-            }
-
             partnersData = <?php echo $jdata; ?>;
             function groupBy(xs, f) {
                 return xs.reduce((r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r), {});
