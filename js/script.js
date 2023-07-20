@@ -113,13 +113,25 @@ function filterRegionAndCountries() {
 }
 
 function filterCity() {
-    if(filter['city'].length === 0) {
-        return;
+    if(filter['city'].length > 0) {
+        $('.cityKey').hide();
+        for(var i = 0; i < filter['city'].length; i++){
+            var id = '.' + filter['city'][i];
+            $(id).show();
+        }
+        // filter countries that have no city shown
+        var enterprise = document.querySelectorAll('enterprise');
+        for (var i = 0; i < enterprise.length; i++) {
+            var allRowsHidden = true;
+            var rows = enterprise[i].querySelectorAll('tr')
+            if (rows[i].style.display !== 'none') {
+                allRowsHidden = false;
+                break;
+            }
+        }
+    }else{
+        $('.cityKey').show();
     }
-    var cities = '.'+filter['city'].join(',.');
-    $('.table:visible tr').not(cities).hide();
-    // filter countries that have no city shown
-    $('.enterprise').not(':has(tr:visible)').hide();
 }
 
 $(document).ready(function() {
@@ -166,7 +178,6 @@ $(document).ready(function() {
             $(e.target).parents(".dropdown").eq(0).find(":checked").click();
             // handles allRegions item
             if($(e.target).hasClass("regions")) {
-                console.log("regions: " + $(e.target));
                 if(!$('.country-selector').is(':visible')) {
                     $('.country-selector').show();
                 }
@@ -190,7 +201,6 @@ $(document).ready(function() {
         $('.region-selection').each(function(i) {
             var id = $(this).val();
             if($(this).is(':checked')) {
-                console.log("inRegionsFilter::::::::::::region----"+id)
                 $('.country-selector#'+id).show().find('.city-selector').show();
             }
         });

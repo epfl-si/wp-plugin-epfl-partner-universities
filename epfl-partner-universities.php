@@ -167,8 +167,9 @@ function getPartners($jdata){
                     var tbody = $("<tbody></tbody>");
                     partners.map((partner) => {
                         var rowClasses = '';
-                        var row = $("<tr></tr>").attr("class", rowClasses);
+                        var townKey = (lang() == 'fr') ? translate(partner.town.fr) : translate(partner.town.en);
                         var town = (lang() == 'fr') ? partner.town.fr : partner.town.en;
+                        var row = $("<tr></tr>").attr("class", rowClasses + " cityKey" + ' ' +  townKey);
                         row.append($("<td></td>").attr("class", "align-baseline city").text(town));
                         var university = $("<td></td>").attr("class", "align-baseline name");
                         university.append($("<a></<a>").attr("href", partner.school.url).attr("target", "_blank").attr("class","link-pretty")
