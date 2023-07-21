@@ -118,15 +118,23 @@ function filterCity() {
         for(var i = 0; i < filter['city'].length; i++){
             var id = '.' + filter['city'][i];
             $(id).show();
+            console.log(id);
         }
         // filter countries that have no city shown
-        var enterprise = document.querySelectorAll('enterprise');
+        var enterprise = document.getElementsByClassName('enterprise');
+        console.log(enterprise.length);
         for (var i = 0; i < enterprise.length; i++) {
             var allRowsHidden = true;
-            var rows = enterprise[i].querySelectorAll('tr')
-            if (rows[i].style.display !== 'none') {
-                allRowsHidden = false;
-                break;
+            var rows = enterprise[i].getElementsByClassName('cityKey')
+            for (var j = 0; j < rows.length; j++) {
+                console.log(rows[j]);
+                if (rows[j].style.display !== 'none') {
+                    allRowsHidden = false;
+                    break;
+                }
+            }
+            if (allRowsHidden) {
+                enterprise[i].style.display = 'none';
             }
         }
     }else{

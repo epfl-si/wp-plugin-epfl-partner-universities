@@ -7,11 +7,39 @@ Author:       Rosa Maggi
 License: Copyright (c) 2021 Ecole Polytechnique Federale de Lausanne, Switzerland
 */
 
-function epfl_partner_universities_process_shortcode()
+function epfl_partner_universities_process_shortcode($atts)
 {
     ob_start();
+    $atts = shortcode_atts([
+        'language' => ''
+    ], $atts);
+    if ($atts['language'] == 'FR') {
+        $language = 'fr';
+        $regionFilterText = "Région";
+        $countryFilterText = "Pays";
+        $townFilterText = "Ville";
+        $allRegionsText = 'Toutes les regions';
+        $allCountriesText = 'Tous les pays';
+        $allCitiesText = 'Toutes les villes';
+        $showAll = 'Tout afficher';
+        $cityLabel = 'Ville';
+        $universityLabel = 'Université';
+    } else {
+        $language = 'en';
+        $regionFilterText = "Region";
+        $countryFilterText = "Country";
+        $townFilterText = "City";
+        $allRegionsText = 'All regions';
+        $allCountriesText = 'All countries';
+        $allCitiesText = 'All cities';
+        $showAll = 'Show all';
+        $cityLabel = 'City';
+        $universityLabel = 'University';
+    }
+
     wp_enqueue_style( 'epfl_partner_universities_style', plugin_dir_url(__FILE__).'css/styles.css', [], '2.1');
     ?><script><?php require_once("js/script.js");?></script><?php
+
     include('page_list.php');
 
     $hostname = "https://isa.epfl.ch/";
@@ -19,8 +47,8 @@ function epfl_partner_universities_process_shortcode()
 
     $partners = call_service($partnersUrl);
     if ($partners['httpCode'] === 200) {
-        getPartners($partners['response']);
-        initPlacesFilter($hostname);
+        getPartners($partners['response'], $language, $cityLabel, $universityLabel);
+        initPlacesFilter($hostname, $language);
     }else{
         show_error_message($partnersUrl, $partners['httpCode']);
     }
@@ -45,20 +73,20 @@ function show_error_message($url,$error){
     echo "<script type='text/javascript'>alert('$message');</script>";
 }
 
-function initPlacesFilter($hostname){
+function initPlacesFilter($hostname, $language){
     $placesUrl = $hostname . "services/mobilite/places";
     $places = call_service($placesUrl);
     if ($places['httpCode'] === 200) {
         $placesJson = $places['response'];
-
        ?>
         <script>
-            placesJson = <?php echo $placesJson; ?>;
+            var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
 
+            var placesJson = <?php echo $placesJson; ?>;
             /* Create the region menu */
             var rmenu = $('#inRegionsFilter');
             placesJson.forEach(function(geo){
-                var name = (lang() == 'fr') ? geo.region.name.fr : geo.region.name.en;
+                var name = (lang == 'fr') ? geo.region.name.fr : geo.region.name.en;
                 var li = $("<li></li>").attr("class", "dropdown-item");
                 var label = $("<label></label>").attr("for", translate(name)+'_id').text(name);
                 var input =$("<input></input>")
@@ -75,12 +103,12 @@ function initPlacesFilter($hostname){
             /* Create the country menu */
             var cmenu = $('#inCountriesFilter')
             placesJson.forEach(function(geo){
-                var regionName = (lang() == 'fr') ? geo.region.name.fr : geo.region.name.en;
+                var regionName = (lang == 'fr') ? geo.region.name.fr : geo.region.name.en;
                 var cdiv = $('<div />').attr("class", "country-selector").attr("id", translate(regionName));
                 cdiv.append($('<li></li>').attr("class", "dropdown-item region-group")
                     .append($("<label></label>").text(regionName)));
                 geo.region.countries.forEach(function(a){
-                    var name = (lang() == 'fr') ? a.country.name.fr : a.country.name.en;
+                    var name = (lang == 'fr') ? a.country.name.fr : a.country.name.en;
                     var li = $("<li></li>").attr("class", "dropdown-item");
                     var label = $("<label></label>").attr("for", translate(name)).text(name);
                     var input = $("<input></input>")
@@ -98,17 +126,17 @@ function initPlacesFilter($hostname){
             // /* Create the city menu */
             var tmenu = $('#inCitiesFilter')
             placesJson.forEach(function(geo){
-                var regionName = (lang() == 'fr') ? geo.region.name.fr : geo.region.name.en;
+                var regionName = (lang == 'fr') ? geo.region.name.fr : geo.region.name.en;
                 var rdiv = $('<div />').attr("class", "country-selector").attr("id", translate(regionName));
                 rdiv.append($('<li></li>').attr("class", "dropdown-item region-group")
                     .append($("<label></label>").text(regionName)));
                 geo.region.countries.forEach(function(a){
-                    var countryName = (lang() == 'fr') ? a.country.name.fr : a.country.name.en;
+                    var countryName = (lang == 'fr') ? a.country.name.fr : a.country.name.en;
                     var cdiv = $('<div />').attr("class", "city-selector").attr("id", translate(countryName));
                     cdiv.append($('<li></li>').attr("class", "dropdown-item country-group")
                         .append($("<label></label>").text(countryName)));
                     a.country.towns.forEach(function(town) {
-                        var name = (lang() == 'fr') ? town.fr : town.en;
+                        var name = (lang == 'fr') ? town.fr : town.en;
                         var li = $("<li></li>").attr("class", "dropdown-item");
                         var label = $("<label></label>").attr("for", translate(name)+'_id').text(name);
                         var input = $("<input></input>")
@@ -132,25 +160,29 @@ function initPlacesFilter($hostname){
     }
 }
 
-function getPartners($jdata){
+function getPartners($jdata, $language, $cityLabel, $universityLabel){
     ?>
         <script>
+            var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
+            var cityLabel = <?= json_encode($cityLabel, JSON_UNESCAPED_UNICODE); ?>;
+            var universityLabel = <?= json_encode($universityLabel, JSON_UNESCAPED_UNICODE); ?>;
+
             partnersData = <?php echo $jdata; ?>;
             function groupBy(xs, f) {
                 return xs.reduce((r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r), {});
             }
-            regionKey = (a) => (lang() == 'fr') ? translate(a.region.name.fr) : translate(a.region.name.en);
+            regionKey = (a) => (lang == 'fr') ? translate(a.region.name.fr) : translate(a.region.name.en);
             const regionMap = groupBy(partnersData, regionKey);
 
             Object.keys(regionMap).forEach((rkey) => {
-                countryKey = (a) => (lang() == 'fr') ? translate(a.country.name.fr) : translate(a.country.name.en);
+                countryKey = (a) => (lang == 'fr') ? translate(a.country.name.fr) : translate(a.country.name.en);
                 const countryMap = groupBy(regionMap[rkey], countryKey);
                 Object.keys(countryMap).forEach((ckey) => {
                     const partners = countryMap[ckey];
 
                     var rel = $("<div></div>").attr("class", "enterprise" + ' ' + rkey + ' ' + ckey).attr("style", "background-color: White");
                     var row1 = $("<div></div>").attr("class", "row justify-content-between country-header");
-                    var country = (lang() == 'fr') ? partners[0].country.name.fr : partners[0].country.name.en;
+                    var country = (lang == 'fr') ? partners[0].country.name.fr : partners[0].country.name.en;
                     row1.append($("<h4></h4>").attr("class", "col-4").text(country));
                     rel.append(row1);
 
@@ -159,16 +191,16 @@ function getPartners($jdata){
 
                     var thead = $("<thead></thead>");
                     var theader = $("<tr></tr>").attr("class", "first-line");
-                    theader.append($("<th></th>").attr("style", "width: 15%").text("City"));
-                    theader.append($("<th></th>").attr("style", "width: 35%").text("University"));
+                    theader.append($("<th></th>").attr("style", "width: 15%").text(cityLabel));
+                    theader.append($("<th></th>").attr("style", "width: 35%").text(universityLabel));
                     thead.append(theader);
                     table.append(thead);
 
                     var tbody = $("<tbody></tbody>");
                     partners.map((partner) => {
                         var rowClasses = '';
-                        var townKey = (lang() == 'fr') ? translate(partner.town.fr) : translate(partner.town.en);
-                        var town = (lang() == 'fr') ? partner.town.fr : partner.town.en;
+                        var townKey = (lang == 'fr') ? translate(partner.town.fr) : translate(partner.town.en);
+                        var town = (lang == 'fr') ? partner.town.fr : partner.town.en;
                         var row = $("<tr></tr>").attr("class", rowClasses + " cityKey" + ' ' +  townKey);
                         row.append($("<td></td>").attr("class", "align-baseline city").text(town));
                         var university = $("<td></td>").attr("class", "align-baseline name");
