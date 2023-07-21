@@ -5,16 +5,6 @@ var filter = {
     city: []
 };
 
-function lang() {
-    var language = "fr";
-    // if($('#in-enterprise-list').hasClass('en')) {
-    //     language="en";
-    // } else {
-    //     language="fr";
-    // }
-    return language;
-}
-
 function debug(obj) {
     obj.map(function(e,x) {
         $.each(this.attributes, function() {
