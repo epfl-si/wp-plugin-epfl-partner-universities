@@ -1,4 +1,4 @@
-<div id="in-enterprise-list">
+<div id="in-enterprise-list" class="container en">
     <div class="row in-option-bar in-filter-bar">
         <div class="col-sm-2 dropdown form-group hidden">
             <button type="button" class="btn btn-secondary ms-choice" data-toggle="dropdown"><?php echo $regionFilterText; ?></button>
@@ -28,6 +28,6 @@
         </div>
     </div>
 </div>
-<div id="in-table-content">
+<div id="in-table-content" class="container en">
 
 </div>
