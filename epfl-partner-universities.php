@@ -3,7 +3,7 @@
 Plugin Name:  EPFL Partner Universities
 Description:  Provides a shortcode to display all partner universities
 Version:      1.0.0
-Author:       Rosa Maggi
+Author:       Rosa Maggi (Renato Kempter (renato.kempter@gmail.com) 2013 - Tim Brigginshaw EPFL (tim.brigginshaw@epfl.ch) 2018)
 License: Copyright (c) 2021 Ecole Polytechnique Federale de Lausanne, Switzerland
 */
 
@@ -39,43 +39,23 @@ function epfl_partner_universities_process_shortcode($atts)
 
     wp_enqueue_style( 'epfl_partner_universities_style', plugin_dir_url(__FILE__).'css/styles.css', [], '2.1');
     ?><script><?php require_once("js/script.js");?></script><?php
-
+    require_once('partner-universities-utils.php');
     include('page_list.php');
-
-    $hostname = "https://isa.epfl.ch/";
-    $partnersUrl = $hostname . "services/mobilite/partners";
-
-    $partners = call_service($partnersUrl);
+    $utils = new Utils();
+    $partnersUrl = $utils->hostname . "services/mobilite/partners";
+    $partners = $utils->call_service($partnersUrl);
     if ($partners['httpCode'] === 200) {
         getPartners($partners['response'], $language, $cityLabel, $universityLabel);
-        initPlacesFilter($hostname, $language);
+        initPlacesFilter($utils, $language);
     }else{
-        show_error_message($partnersUrl, $partners['httpCode']);
+        $utils->show_error_message($partnersUrl, $partners['httpCode']);
     }
     return ob_get_clean();
 }
 
-function call_service($url): array
-{
-    $result = array();
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-    $result['response'] = curl_exec($curl);
-    $result['httpCode']  = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    curl_close($curl);
-    return $result;
-}
-
-function show_error_message($url,$error){
-    $message = $url . ' - ' . $error;
-    echo "<script type='text/javascript'>alert('$message');</script>";
-}
-
-function initPlacesFilter($hostname, $language){
-    $placesUrl = $hostname . "services/mobilite/places";
-    $places = call_service($placesUrl);
+function initPlacesFilter($utils, $language){
+    $placesUrl = $utils->hostname . "services/mobilite/places";
+    $places = $utils->call_service($placesUrl);
     if ($places['httpCode'] === 200) {
         $placesJson = $places['response'];
        ?>

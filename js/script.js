@@ -46,8 +46,6 @@ function reset() {
 
 function removeElement(type, value) {
     if(type !== undefined) {
-        console.log("type: "+type);
-        console.log("value: "+value);
         var index = filter[type].indexOf(value);
         filter[type].splice(index, 1);
     }
@@ -76,6 +74,7 @@ function startFilter() {
     reset();
     filterRegionAndCountries();
     filterCity();
+    filterSection();
     $(".enterprise table").filter(function(){
         return $(this).find("tr:visible").length;
     }).find("thead tr").show();
@@ -129,6 +128,26 @@ function filterCity() {
         }
     }else{
         $('.cityKey').show();
+    }
+}
+
+function filterSection() {
+    if(filter['section'].length === 0) {
+        return;
+    }
+    var sections = "."+filter['section'].join(',.');
+
+    $('.table:visible tr').not(sections).hide();
+    $('.table:visible tr:visible .sections li,.table:visible tr:visible .places li').not(sections).hide();
+
+    $('.enterprise').not(':has(tr:visible)').hide();
+}
+
+function sortSection( a, b ) {
+    if( $(a).data("order").f == $(b).data("order").f ) {
+        return ($(a).data("order").s < $(b).data("order").s) ? -1 : $(a).data("order").s > $(b).data("order").s ? 1 : 0;
+    } else {
+        return ($(a).data("order").f > $(b).data("order").f) ? 1 : -1;
     }
 }
 
@@ -214,5 +233,237 @@ $(document).ready(function() {
                 $('.city-selector#'+id).show();
             }
         });
+    });
+
+    $('#showmap').click(function(e) {
+        e.preventDefault();
+        resetType();
+        resetMenu();
+        $('#enterprise-list').hide();
+        $('#map-list').show();
+        $('#map-list .town').show();
+        $('#map-list #sections').val("all");
+
+        $('#map-list .country-hover').each(function() {
+            var continent = $(this).attr('id');
+            var hasElement = false;
+
+            $(this).find('.country-menu').each(function() {
+                if($(this).find('.country-listing').length > 0) {
+                    if(!hasElement)
+                        hasElement = true;
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            if(hasElement) {
+                $(this).addClass('active');
+                $('#map-list #world .'+continent).addClass('active');
+            } else {
+                $('#map-list #world .'+continent).removeClass('active');
+                $(this).removeClass('active');
+            }
+        });
+    });
+
+    $('.selection-link').on('mousedown', function(e) {
+        e.preventDefault();
+
+        var link = $(this).attr('href').substring(1);
+        var type = $(this).attr('data-type');
+
+        $('#map-list').hide();
+        $('#enterprise-list').show();
+
+        setElement(type, link);
+    });
+
+    $('#map-list .town').show();
+    $('#map-list .country-hover').each(function() {
+        var continent = $(this).attr('id');
+        var footer = continent+'-footer';
+        var hasElement = false;
+
+        $(this).find('.country-menu').each(function() {
+            if($(this).find('.country-listing').length > 0) {
+                if(!hasElement)
+                    hasElement = true;
+            } else {
+                $(this).hide();
+            }
+        });
+
+        if(hasElement) {
+            $(this).addClass('active');
+            $('#map-list #world .'+continent).addClass('active');
+            $('#map-list-footer #'+footer).addClass('active');
+        } else {
+            $('#map-list #world .'+continent).removeClass('active');
+            $('#map-list-footer #'+footer).removeClass('active');
+            $(this).removeClass('active');
+        }
+    });
+
+    $('#sectionsFilter').change(function() {
+        var val = $('#map-list #sections option:selected').val();
+        if(val === 'all') {
+            $('#map-list').show();
+            $('#map-list .town').show();
+            $('#map-list .country-listing').show();
+        } else {
+            $('#map-list .town').hide();
+            $('#map-list .'+val).show();
+        }
+
+        $('#map-list .country-hover').each(function() {
+            var continent = $(this).attr('id');
+            var hasElement = false;
+
+            if(val !== 'all') {
+                $(this).find('.country-listing').each(function() {
+                    if($(this).find('.'+val).length > 0) {
+                        $(this).show();
+                        if(!hasElement)
+                            hasElement = true;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            } else {
+                $(this).find('.country-menu').each(function() {
+                    if($(this).find('.country-listing').length > 0) {
+                        if(!hasElement)
+                            hasElement = true;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+
+            if(hasElement) {
+                $(this).addClass('active');
+                $('#map-list #world .'+continent).addClass('active');
+            } else {
+                $('#map-list #world .'+continent).removeClass('active');
+                $(this).removeClass('active');
+            }
+        });
+    });
+
+    var hoverin = function(e) {
+
+        if($('.city-menu').not(':visible')) {
+            var id = $(this).attr('id');
+            $('#world .'+id).addClass('hover');
+            $(this).addClass('hover').css('z-index', 4);
+            $('#map-list-footer #'+id+'-footer').addClass('hover');
+        }
+    };
+
+    var hoverout = function(e) {
+        if($('.city-menu').not(':visible')) {
+            var id = $(this).attr('id');
+            $('#world .'+id).removeClass('hover');
+            $(this).removeClass('hover').css('z-index', 3);
+            $('#map-list-footer #'+id+'-footer').removeClass('hover');
+        }
+    };
+
+    $('.country-hover').hover(hoverin, hoverout);
+
+    // Dropdown menu map
+    $('.option-bar .dropdown').change(function(event) {
+        var type = event.target.name;
+        var value = event.target.value;
+
+        switch(type) {
+            case 'region':
+                self.resetType('country');
+                break;
+            case 'country':
+                self.resetType('city');
+                break;
+        }
+
+
+        if($(event.target).is(':checked')) {
+            self.filter[type].push(value);
+        } else {
+            self.removeElement(type, value);
+        }
+        self.startFilter();
+    });
+
+    // Dropdown menu show-all map
+    $('.option-bar .dropdown').click(function(e) {
+        if($(e.target).hasClass("show-all")) {
+            e.preventDefault();
+
+            $(e.target).parents(".dropdown").eq(0).find(":checked").click();
+
+            // handles allRegions item
+            if($(e.target).hasClass("regions")) {
+                if(!$('.country-selector').is(':visible')) {
+                    $('.country-selector').show();
+                }
+            }
+            // handles all country items
+            if($(e.target).hasClass("countries")) {
+                if(!$('.city-selector').is(':visible')) {
+                    $('.city-selector').show();
+                }
+            }
+        }
+    });
+
+    $('.option-bar .dropdown').on('mouseover click', function(event) {
+        if($(this).find('.menu').hasClass('hidden')) {
+            $(this).find('.menu').removeClass('hidden');
+            event.stopPropagation();
+        }
+    });
+
+    $('body').click(function() {
+        $('.option-bar .menu').addClass('hidden');
+    });
+
+    $('.option-bar .dropdown').mouseleave(function() {
+        $('.option-bar .menu').addClass('hidden');
+    });
+
+    $('#regionsFilter').change(function() {
+
+        // Reset all country selectors
+        $('.country-selection').attr('checked', false);
+        $('.city-selection').attr('checked', false);
+
+        // hide all countries
+        $('.country-selector').hide();
+
+        // show selected cities of selected regions
+        $('.region-selection').each(function(i) {
+            var id = $(this).val();
+            if($(this).is(':checked')) {
+                $('.country-selector#'+id).show().find('.city-selector').show();
+            }
+        });
+
+    });
+
+    $('#countriesFilter').change(function() {
+
+        // Reset all city selectors
+        $('.city-selection').attr('checked', false);
+
+        $('.city-selector').hide();
+
+        $('.country-selection').each(function(i) {
+            var id = $(this).val();
+            if($(this).is(':checked')) {
+                $('.city-selector#'+id).show();
+            }
+        });
+
     });
 });
