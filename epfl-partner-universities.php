@@ -7,145 +7,74 @@ Author:       Rosa Maggi (Renato Kempter (renato.kempter@gmail.com) 2013 - Tim B
 License: Copyright (c) 2021 Ecole Polytechnique Federale de Lausanne, Switzerland
 */
 
+$labels = [];
+
 function epfl_partner_universities_process_shortcode($atts)
 {
     ob_start();
     $atts = shortcode_atts([
         'language' => ''
     ], $atts);
-    if ($atts['language'] == 'FR') {
-        $language = 'fr';
-        $regionFilterText = "Région";
-        $countryFilterText = "Pays";
-        $townFilterText = "Ville";
-        $allRegionsText = 'Toutes les regions';
-        $allCountriesText = 'Tous les pays';
-        $allCitiesText = 'Toutes les villes';
-        $showAll = 'Tout afficher';
-        $cityLabel = 'Ville';
-        $universityLabel = 'Université';
-    } else {
-        $language = 'en';
-        $regionFilterText = "Region";
-        $countryFilterText = "Country";
-        $townFilterText = "City";
-        $allRegionsText = 'All regions';
-        $allCountriesText = 'All countries';
-        $allCitiesText = 'All cities';
-        $showAll = 'Show all';
-        $cityLabel = 'City';
-        $universityLabel = 'University';
-    }
 
-    wp_enqueue_style( 'epfl_partner_universities_style', plugin_dir_url(__FILE__).'css/styles.css', [], '2.1');
-    ?><script><?php require_once("js/script.js");?></script><?php
+    /*include all required classes*/
     require_once('partner-universities-utils.php');
-    include('page_list.php');
+    require_once('partner-universities-traductions.php');
+    ?><script><?php require_once("js/script.js");?></script><?php
+    wp_enqueue_style( 'epfl_partner_universities_style', plugin_dir_url(__FILE__).'css/styles.css', [], '2.1');
+
+    /*initialization of utility classes*/
     $utils = new Utils();
+    $traductions = new Traduction();
+
+    /*prepare the page*/
+    $labels = $traductions->translateLabels($atts['language']);
+    include('page_list.php');
+
+    /*web services calls*/
     $partnersUrl = $utils->hostname . "services/mobilite/partners";
     $partners = $utils->call_service($partnersUrl);
     if ($partners['httpCode'] === 200) {
-        getPartners($partners['response'], $language, $cityLabel, $universityLabel);
-        initPlacesFilter($utils, $language);
+        getPartners($partners['response'], $labels);
+        initPlacesFilter($utils, $labels['language']);
     }else{
         $utils->show_error_message($partnersUrl, $partners['httpCode']);
     }
     return ob_get_clean();
 }
 
+/**
+ * @param $utils
+ * @param $language
+ * @description initialization of the filter
+ * @return void
+ */
 function initPlacesFilter($utils, $language){
     $placesUrl = $utils->hostname . "services/mobilite/places";
     $places = $utils->call_service($placesUrl);
     if ($places['httpCode'] === 200) {
         $placesJson = $places['response'];
-       ?>
-        <script>
-            var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
-
-            var placesJson = <?php echo $placesJson; ?>;
-            /* Create the region menu */
-            var rmenu = $('#inRegionsFilter');
-            placesJson.forEach(function(geo){
-                var name = (lang == 'fr') ? geo.region.name.fr : geo.region.name.en;
-                var li = $("<li></li>").attr("class", "dropdown-item");
-                var label = $("<label></label>").attr("for", translate(name)+'_id').text(name);
-                var input =$("<input></input>")
-                    .attr("id", translate(name)+'_id')
-                    .attr("type", "checkbox")
-                    .attr("class", "region-selection")
-                    .attr("name","region")
-                    .attr("value", translate(name));
-                li.append(input);
-                li.append(label);
-                rmenu.append(li);
-            });
-
-            /* Create the country menu */
-            var cmenu = $('#inCountriesFilter')
-            placesJson.forEach(function(geo){
-                var regionName = (lang == 'fr') ? geo.region.name.fr : geo.region.name.en;
-                var cdiv = $('<div />').attr("class", "country-selector").attr("id", translate(regionName));
-                cdiv.append($('<li></li>').attr("class", "dropdown-item region-group")
-                    .append($("<label></label>").text(regionName)));
-                geo.region.countries.forEach(function(a){
-                    var name = (lang == 'fr') ? a.country.name.fr : a.country.name.en;
-                    var li = $("<li></li>").attr("class", "dropdown-item");
-                    var label = $("<label></label>").attr("for", translate(name)).text(name);
-                    var input = $("<input></input>")
-                        .attr("id", translate(name))
-                        .attr("type", "checkbox")
-                        .attr("class", "country-selection")
-                        .attr("name","country")
-                        .attr("value", translate(name));
-                    li.append(input);
-                    li.append(label);
-                    cmenu.append(cdiv.append(li));
-                });
-            });
-
-            // /* Create the city menu */
-            var tmenu = $('#inCitiesFilter')
-            placesJson.forEach(function(geo){
-                var regionName = (lang == 'fr') ? geo.region.name.fr : geo.region.name.en;
-                var rdiv = $('<div />').attr("class", "country-selector").attr("id", translate(regionName));
-                rdiv.append($('<li></li>').attr("class", "dropdown-item region-group")
-                    .append($("<label></label>").text(regionName)));
-                geo.region.countries.forEach(function(a){
-                    var countryName = (lang == 'fr') ? a.country.name.fr : a.country.name.en;
-                    var cdiv = $('<div />').attr("class", "city-selector").attr("id", translate(countryName));
-                    cdiv.append($('<li></li>').attr("class", "dropdown-item country-group")
-                        .append($("<label></label>").text(countryName)));
-                    a.country.towns.forEach(function(town) {
-                        var name = (lang == 'fr') ? town.fr : town.en;
-                        var li = $("<li></li>").attr("class", "dropdown-item");
-                        var label = $("<label></label>").attr("for", translate(name)+'_id').text(name);
-                        var input = $("<input></input>")
-                            .attr("type", "checkbox")
-                            .attr("class", "city-selection")
-                            .attr("name","city")
-                            .attr("value", translate(name));
-                        li.append(input);
-                        li.append(label);
-                        cdiv.append(li);
-                    });
-                    rdiv.append(cdiv);
-                });
-                tmenu.append(rdiv);
-            });
-
-        </script>
-        <?php
+        $utils->createRegionMenu($language, $placesJson);
+        $utils->createCountryMenu($language, $placesJson);
+        $utils->createCityMenu($language, $placesJson);
     }else{
         show_error_message($placesUrl, $places['httpCode']);
     }
 }
 
-function getPartners($jdata, $language, $cityLabel, $universityLabel){
+/**
+ * @param $jdata
+ * @param $language
+ * @param $cityLabel
+ * @param $universityLabel
+ * @description web service call for partners list and list définition
+ * @return void
+ */
+function getPartners($jdata, $labels){
     ?>
         <script>
-            var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
-            var cityLabel = <?= json_encode($cityLabel, JSON_UNESCAPED_UNICODE); ?>;
-            var universityLabel = <?= json_encode($universityLabel, JSON_UNESCAPED_UNICODE); ?>;
+            var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
+            var cityLabel = <?= json_encode($labels['cityLabel'], JSON_UNESCAPED_UNICODE); ?>;
+            var universityLabel = <?= json_encode($labels['universityLabel'], JSON_UNESCAPED_UNICODE); ?>;
 
             partnersData = <?php echo $jdata; ?>;
             function groupBy(xs, f) {

@@ -4,7 +4,7 @@ Plugin Name:  EPFL Partner Universities Map
 Description:  Provides a shortcode to display all partner universities
 Version:      1.0.0
 Author:       Rosa Maggi (Renato Kempter (renato.kempter@gmail.com) 2013 - Tim Brigginshaw EPFL (tim.brigginshaw@epfl.ch) 2018)
-License: Copyright (c) 2021 Ecole Polytechnique Federale de Lausanne, Switzerland
+License:      Copyright (c) 2021 Ecole Polytechnique Federale de Lausanne, Switzerland
 */
 
 function epfl_partner_universities_map_process_shortcode($atts)
@@ -13,80 +13,60 @@ function epfl_partner_universities_map_process_shortcode($atts)
     $atts = shortcode_atts([
         'language' => ''
     ], $atts);
-    if ($atts['language'] == 'FR') {
-        $language = 'fr';
-        $regionFilterText = "Région";
-        $countryFilterText = "Pays";
-        $townFilterText = "Ville";
-        $allRegionsText = 'Toutes les regions';
-        $allCountriesText = 'Tous les pays';
-        $allCitiesText = 'Toutes les villes';
-        $showAll = 'Tout afficher';
-        $cityLabel = 'Ville';
-        $universityLabel = 'Université';
-        $selectMapText = 'Sélectionnez votre section';
-        $selectFilterText = 'Toutes les sections';
-        $cityText = 'Ville';
-        $uniText = 'Université';
-        $sectionText = 'Section';
-        $remText = 'Remarques';
-    } else {
-        $language = 'en';
-        $regionFilterText = "Region";
-        $countryFilterText = "Country";
-        $townFilterText = "City";
-        $allRegionsText = 'All regions';
-        $allCountriesText = 'All countries';
-        $allCitiesText = 'All cities';
-        $showAll = 'Show all';
-        $cityLabel = 'City';
-        $universityLabel = 'University';
-        $selectMapText = 'Please choose a section';
-        $selectFilterText = 'All sections';
-        $cityText = 'City';
-        $uniText = 'University';
-        $sectionText = 'Sections';
-        $remText = 'Remarks';
-    }
 
-    wp_enqueue_style( 'epfl_partner_universities_style', plugin_dir_url(__FILE__).'css/styles.css', [], '2.1');
-    ?><script><?php require_once("js/script.js");?></script><?php
+    /*include all required classes*/
     require_once('partner-universities-utils.php');
+    require_once('partner-universities-traductions.php');
+    ?><script><?php require_once("js/script.js");?></script><?php
+    wp_enqueue_style( 'epfl_partner_universities_style', plugin_dir_url(__FILE__).'css/styles.css', [], '2.1');
+
+    /*initialization of utility classes*/
+    $utils = new Utils();
+    $traductions = new Traduction();
+
+    /*prepare the page*/
+    $labels = $traductions->translateLabels($atts['language']);
     include('page_map.php');
 
-    $utils = new Utils();
+    /*web services calls*/
     $mobiliteUrl = $utils->hostname . "services/mobilite/search";
     $partners = $utils->call_service($mobiliteUrl);
     if ($partners['httpCode'] === 200) {
         getRegions($partners['response']);
-        getPartners($partners['response'], $language, $cityLabel, $universityLabel, $cityText, $uniText, $sectionText, $remText);
-        initSectionsFilter($utils->hostname, $language, $selectFilterText);
-        initPlacesFilter($utils->hostname, $language, $allRegionsText, $regionFilterText, $countryFilterText, $allCountriesText, $townFilterText, $allCitiesText);
+        getPartnersMap($utils->hostname, $partners['response'], $labels);
+        initSectionsFilter($utils, $labels);
+        initPlacesFilterMap($utils, $labels);
     }else{
         $utils->show_error_message($mobiliteUrl, $partners['httpCode']);
     }
     return ob_get_clean();
 }
 
-function initPlacesFilter($hostname, $language, $allRegionsText, $regionFilterText, $countryFilterText, $allCountriesText, $townFilterText, $allCitiesText){
-    $placesUrl = $hostname . "services/mobilite/places";
-    $places = call_service($placesUrl);
+/**
+ * @param $utils
+ * @param $language
+ * @description initialization of the filter
+ * @return void
+ */
+function initPlacesFilterMap($utils, $labels){
+    $placesUrl = $utils->hostname . "services/mobilite/places";
+    $places = $utils->call_service($placesUrl);
     if ($places['httpCode'] === 200) {
         $placesJson = $places['response'];
         ?>
         <script>
-            var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
-            var allRegionsText = <?= json_encode($allRegionsText, JSON_UNESCAPED_UNICODE); ?>;
-            var regionFilterText = <?= json_encode($regionFilterText, JSON_UNESCAPED_UNICODE); ?>;
-            var countryFilterText = <?= json_encode($countryFilterText, JSON_UNESCAPED_UNICODE); ?>;
-            var allCountriesText = <?= json_encode($allCountriesText, JSON_UNESCAPED_UNICODE); ?>;
-            var townFilterText = <?= json_encode($townFilterText, JSON_UNESCAPED_UNICODE); ?>;
-            var allCitiesText = <?= json_encode($allCitiesText, JSON_UNESCAPED_UNICODE); ?>;
+            var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
+            var allRegionsText = <?= json_encode($labels['allRegionsText'], JSON_UNESCAPED_UNICODE); ?>;
+            var regionFilterText = <?= json_encode($labels['regionFilterText'], JSON_UNESCAPED_UNICODE); ?>;
+            var countryFilterText = <?= json_encode($labels['countryFilterText'], JSON_UNESCAPED_UNICODE); ?>;
+            var allCountriesText = <?= json_encode($labels['allCountriesText'], JSON_UNESCAPED_UNICODE); ?>;
+            var townFilterText = <?= json_encode($labels['townFilterText'], JSON_UNESCAPED_UNICODE); ?>;
+            var allCitiesText = <?= json_encode($labels['allCitiesText'], JSON_UNESCAPED_UNICODE); ?>;
 
             var placesJson = <?php echo $placesJson; ?>;
 
             /* Create the region menu */
-            var rel = $('#regionsFilter');
+            var rel = $('#inRegionsFilter');
             rel.empty();
             var rb = $("<button></button>").attr("type", "button").attr("class", "btn btn-secondary ms-choice").attr("data-toggle", "dropdown").text(regionFilterText);
             var rmenu = $("<ul></ul>").attr("class", "menu dropdown-menu");
@@ -113,7 +93,7 @@ function initPlacesFilter($hostname, $language, $allRegionsText, $regionFilterTe
 
 
             /* Create the country menu */
-            var cel = $('#countriesFilter')
+            var cel = $('#inCountriesFilter')
             cel.empty();
             var cb = $("<button></button>").attr("type", "button").attr("class", "btn btn-secondary ms-choice").attr("data-toggle", "dropdown").text(countryFilterText);
             var cmenu = $("<ul></ul>").attr("class", "menu dropdown-menu");
@@ -146,7 +126,7 @@ function initPlacesFilter($hostname, $language, $allRegionsText, $regionFilterTe
 
 
             // /* Create the city menu */
-            var tel = $('#citiesFilter')
+            var tel = $('#inCitiesFilter')
             tel.empty();
             var tb = $("<button></button>").attr("type", "button").attr("class", "btn btn-secondary ms-choice").attr("data-toggle", "dropdown").text(townFilterText);
             var tmenu = $("<ul></ul>").attr("class", "menu dropdown-menu");
@@ -191,24 +171,36 @@ function initPlacesFilter($hostname, $language, $allRegionsText, $regionFilterTe
     }
 }
 
-function getPartners($jdata, $language, $cityLabel, $universityLabel, $cityText, $uniText, $sectionText, $remText){
+/**
+ * @param $jdata
+ * @param $language
+ * @param $cityLabel
+ * @param $universityLabel
+ * @description web service call for partners list and list définition
+ * @return void
+ */
+function getPartnersMap($hostname, $jdata, $labels){
     ?>
     <script>
-        var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
-        var cityLabel = <?= json_encode($cityLabel, JSON_UNESCAPED_UNICODE); ?>;
-        var universityLabel = <?= json_encode($universityLabel, JSON_UNESCAPED_UNICODE); ?>;
-        var cityText = <?= json_encode($cityText, JSON_UNESCAPED_UNICODE); ?>;
-        var uniText = <?= json_encode($uniText, JSON_UNESCAPED_UNICODE); ?>;
-        var sectionText = <?= json_encode($sectionText, JSON_UNESCAPED_UNICODE); ?>;
-        var remText = <?= json_encode($remText, JSON_UNESCAPED_UNICODE); ?>;
+        var hostname = <?= json_encode($hostname, JSON_UNESCAPED_UNICODE); ?>;
+        var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
+        var cityLabel = <?= json_encode($labels['cityLabel'], JSON_UNESCAPED_UNICODE); ?>;
+        var universityLabel = <?= json_encode($labels['universityLabel'], JSON_UNESCAPED_UNICODE); ?>;
+        var sectionText = <?= json_encode($labels['sectionText'], JSON_UNESCAPED_UNICODE); ?>;
+        var remText = <?= json_encode($labels['remText'], JSON_UNESCAPED_UNICODE); ?>;
+        var emailContact = <?= json_encode($labels['emailContact'], JSON_UNESCAPED_UNICODE); ?>;
+        var placeDisponibles = <?= json_encode($labels['placeDisponibles'], JSON_UNESCAPED_UNICODE); ?>;
+        var universityInformation = <?= json_encode($labels['universityInformation'], JSON_UNESCAPED_UNICODE); ?>;
+        var fichePDF = <?= json_encode($labels['fichePDF'], JSON_UNESCAPED_UNICODE); ?>;
 
         partnersData = <?php echo $jdata; ?>;
         function groupBy(xs, f) {
             return xs.reduce((r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r), {});
         }
         countryKey = (a) => translate((lang == 'fr') ? a.country.name.fr : a.country.name.en);
-        const countryMap = groupBy(jdata, countryKey);
+        const countryMap = groupBy(partnersData, countryKey);
 
+        var el = $('#table-content');
         Object.keys(countryMap).sort().forEach((ckey) => {
             const partners = countryMap[ckey];
             const head = partners[0];
@@ -219,7 +211,7 @@ function getPartners($jdata, $language, $cityLabel, $universityLabel, $cityText,
             row1.append($("<h4></h4>").attr("class", "col-4").text(country));
 
             var contact = $("<div></div>").attr("class", "col-4 float-right contact");
-            var a =$("<a></a>").attr("href", "mailto:" + head.contacts[0].email).attr("class", "button email").attr("title", "E-mail de la personne de contact à l'EPFL");
+            var a =$("<a></a>").attr("href", "mailto:" + head.contacts[0].email).attr("class", "button email").attr("title", emailContact);
             a.append($("<button></button>").attr("class", "icon-white").text(" "));
             a.append($("<span></span>").attr("class", "label text-right").text(head.contacts[0].name));
             contact.append(a);
@@ -231,13 +223,13 @@ function getPartners($jdata, $language, $cityLabel, $universityLabel, $cityText,
 
             var thead = $("<thead></thead>");
             var theader = $("<tr></tr>").attr("class", "first-line");
-            theader.append($("<th></th>").attr("style", "width: 15%").text(cityText));
-            theader.append($("<th></th>").attr("style", "width: 35%").text(uniText));
+            theader.append($("<th></th>").attr("style", "width: 15%").text(cityLabel));
+            theader.append($("<th></th>").attr("style", "width: 35%").text(universityLabel));
             theader.append($("<th></th>").attr("style", "width: 25%").text(sectionText));
-            theader.append($("<th></th>").attr("style", "width: 3%").append($("<span></span>").attr("class", "icon-people").attr("title", "Nombre de places total disponibles")));
+            theader.append($("<th></th>").attr("style", "width: 3%").append($("<span></span>").attr("class", "icon-people").attr("title", placeDisponibles)));
             theader.append($("<th></th>").attr("style", "width: 18%").text(remText));
-            theader.append($("<th></th>").attr("style", "width: 2%").append($("<span></span>").attr("class", "icon-information").attr("title", "Informations sur le site de l'université partenaire")));
-            theader.append($("<th></th>").attr("style", "width: 2%").append($("<span></span>").attr("class", "icon-pdf").attr("title", "Fiche de l'université partenaire (PDF)")));
+            theader.append($("<th></th>").attr("style", "width: 2%").append($("<span></span>").attr("class", "icon-information").attr("title", universityInformation)));
+            theader.append($("<th></th>").attr("style", "width: 2%").append($("<span></span>").attr("class", "icon-pdf").attr("title", fichePDF)));
             thead.append(theader);
             table.append(thead);
 
@@ -251,7 +243,8 @@ function getPartners($jdata, $language, $cityLabel, $universityLabel, $cityText,
                     });
                 });
 
-                var row = $("<tr></tr>").attr("class", rowClasses);
+                var townKey = (lang == 'fr') ? translate(partner.town.fr) : translate(partner.town.en);
+                var row = $("<tr></tr>").attr("class", rowClasses + " cityKey" + ' ' +  townKey);
 
                 var partnerTown = (lang == 'fr') ? partner.town.fr : partner.town.en || partner.town.fr;
                 var partnerSchoolName = (lang == 'fr') ? partner.school.name.fr : partner.school.name.en || partner.school.name.fr;
@@ -304,7 +297,7 @@ function getPartners($jdata, $language, $cityLabel, $universityLabel, $cityText,
                 // Exchange
                 var exchanges = $("<td></td>").attr("class", "align-baseline exchange")
                 partner.exchangeWebSites.map((site) => {
-                    exchanges.append($("<a></a>").attr("href", site).attr("class", "information").attr("title", "Informations sur le site de l'université partenaire").attr("target", "_blank")
+                    exchanges.append($("<a></a>").attr("href", site).attr("class", "information").attr("title", universityInformation).attr("target", "_blank")
                         .append($("<button></button>").attr("class", "icon-white").text(" ")));
                 });
                 row.append(exchanges);
@@ -312,7 +305,7 @@ function getPartners($jdata, $language, $cityLabel, $universityLabel, $cityText,
                 // Datasheet
                 if (partner.datasheet !== null) {
                     row.append($("<td></td>").attr("class", "align-baseline documents")
-                        .append($("<a></a>").attr("href", hostname+partner.datasheet.href).attr("class", "pdf").attr("title", "Fiche de l'université partenaire (PDF)").attr("target", "_blank")
+                        .append($("<a></a>").attr("href", hostname+partner.datasheet.href).attr("class", "pdf").attr("title", fichePDF).attr("target", "_blank")
                             .append($("<button></button>").attr("class", "icon-white").text(" "))));
                 } else {
                     row.append($("<td></td>").attr("class", "align-baseline documents"));
@@ -328,11 +321,16 @@ function getPartners($jdata, $language, $cityLabel, $universityLabel, $cityText,
     <?php
 }
 
+/**
+ * @param $jdata
+ * @description method to create the map page
+ * @return void
+ */
 function getRegions($jdata){
     ?>
         <script>
             var jdata = <?php echo $jdata; ?>;
-            var el = $('#map-list').find('#map'))
+            var el = $('#map-list').find('#map')
             var rList = jdata.map(function(d) { return d.region.name.fr });
             var uniqueArray = [...new Set(rList)];
 
@@ -350,17 +348,23 @@ function getRegions($jdata){
     <?php
 }
 
-function initSectionsFilter($hostname, $language, $selectFilterText){
-    $sectionsUrl = $hostname . "services/mobilite/sections";
-    $sections = call_service($sectionsUrl);
+/**
+ * @param $utils
+ * @param $labels
+ * @description method to create the section filter
+ * @return void
+ */
+function initSectionsFilter($utils, $labels){
+    $sectionsUrl = $utils->hostname . "services/mobilite/sections";
+    $sections = $utils->call_service($sectionsUrl);
     if ($sections['httpCode'] === 200) {
         $sectionsJson = $sections['response'];
         ?>
         <script>
-            var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
-            var selectFilterText = <?= json_encode($selectFilterText, JSON_UNESCAPED_UNICODE); ?>;
+            var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
+            var selectFilterText = <?= json_encode($labels['selectFilterText'], JSON_UNESCAPED_UNICODE); ?>;
             var sectionsJson = <?php echo $sectionsJson; ?>;
-            var sel = $("#sectionsFilter")
+            var sel = $("#inSectionsFilter")
 
             sel.empty(); // remove old options
 
