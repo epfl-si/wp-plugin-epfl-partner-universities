@@ -3,21 +3,21 @@
         <div id="map-list-header"></div>
         <div id="map">
             <div id="world" class="fr">
-                <div class="continents africa"></div>
-                <div class="continents europe"></div>
-                <div class="continents amerique-du-nord"></div>
-                <div class="continents amerique-du-sud"></div>
-                <div class="continents asie"></div>
-                <div class="continents oceanie"></div>
+                <div class="continents <?php echo $labels['afriqueId']; ?>"></div>
+                <div class="continents <?php echo $labels['europeId']; ?>"></div>
+                <div class="continents <?php echo $labels['ameriqueNordId']; ?>"></div>
+                <div class="continents <?php echo $labels['ameriqueSudId']; ?>"></div>
+                <div class="continents <?php echo $labels['asieId']; ?>"></div>
+                <div class="continents <?php echo $labels['oceanieId']; ?>"></div>
             </div>
         </div>
         <div id="map-list-footer" class="row">
-            <h4 id="amerique-du-nord-footer"><?php echo $labels['ameriqueNord']; ?></h4>
-            <h4 id="amerique-du-sud-footer"><?php echo $labels['ameriqueSud']; ?></h4>
-            <h4 id="europe-footer"><?php echo $labels['europe']; ?></h4>
-            <h4 id="africa-footer"><?php echo $labels['afrique']; ?></h4>
-            <h4 id="asie-footer"><?php echo $labels['asie']; ?></h4>
-            <h4 id="oceanie-footer"><?php echo $labels['oceanie']; ?></h4>
+            <h4 id="<?php echo $labels['ameriqueNordId']."-footer"; ?>"><?php echo $labels['ameriqueNord']; ?></h4>
+            <h4 id="<?php echo $labels['ameriqueSudId']."-footer"; ?>"><?php echo $labels['ameriqueSud']; ?></h4>
+            <h4 id="<?php echo $labels['europeId']."-footer"; ?>"><?php echo $labels['europe']; ?></h4>
+            <h4 id="<?php echo $labels['afriqueId']."-footer"; ?>"><?php echo $labels['afrique']; ?></h4>
+            <h4 id="<?php echo $labels['asieId']."-footer"; ?>"><?php echo $labels['asie']; ?></h4>
+            <h4 id="<?php echo $labels['oceanieId']."-footer"; ?>"><?php echo $labels['oceanie']; ?></h4>
         </div>
     </div>
     <div id="enterprise-list" class="container">

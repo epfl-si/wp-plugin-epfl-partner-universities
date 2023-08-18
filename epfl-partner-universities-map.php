@@ -32,143 +32,15 @@ function epfl_partner_universities_map_process_shortcode($atts)
     $mobiliteUrl = $utils->hostname . "services/mobilite/search";
     $partners = $utils->call_service($mobiliteUrl);
     if ($partners['httpCode'] === 200) {
-        getRegions($partners['response']);
+        getRegions($partners['response'], $labels["language"]);
         getPartnersMap($utils->hostname, $partners['response'], $labels);
         initSectionsFilter($utils, $labels);
-        initPlacesFilterMap($utils, $labels);
+        $utils->map = true;
+        $utils->initPlacesFilter($labels);
     }else{
-        $utils->show_error_message($mobiliteUrl, $partners['httpCode']);
+        $utils->show_error_message($mobiliteUrl, $partners['httpCode'], $labels);
     }
     return ob_get_clean();
-}
-
-/**
- * @param $utils
- * @param $language
- * @description initialization of the filter
- * @return void
- */
-function initPlacesFilterMap($utils, $labels){
-    $placesUrl = $utils->hostname . "services/mobilite/places";
-    $places = $utils->call_service($placesUrl);
-    if ($places['httpCode'] === 200) {
-        $placesJson = $places['response'];
-        ?>
-        <script>
-            var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
-            var allRegionsText = <?= json_encode($labels['allRegionsText'], JSON_UNESCAPED_UNICODE); ?>;
-            var regionFilterText = <?= json_encode($labels['regionFilterText'], JSON_UNESCAPED_UNICODE); ?>;
-            var countryFilterText = <?= json_encode($labels['countryFilterText'], JSON_UNESCAPED_UNICODE); ?>;
-            var allCountriesText = <?= json_encode($labels['allCountriesText'], JSON_UNESCAPED_UNICODE); ?>;
-            var townFilterText = <?= json_encode($labels['townFilterText'], JSON_UNESCAPED_UNICODE); ?>;
-            var allCitiesText = <?= json_encode($labels['allCitiesText'], JSON_UNESCAPED_UNICODE); ?>;
-
-            var placesJson = <?php echo $placesJson; ?>;
-
-            /* Create the region menu */
-            var rel = $('#inRegionsFilter');
-            rel.empty();
-            var rb = $("<button></button>").attr("type", "button").attr("class", "btn btn-secondary ms-choice").attr("data-toggle", "dropdown").text(regionFilterText);
-            var rmenu = $("<ul></ul>").attr("class", "menu dropdown-menu");
-            rmenu.append($("<li></li>").attr("class", "dropdown-item")
-                .append($("<label></label>")
-                    .append($("<a></a>").attr("href", "#").attr("class", "show-all regions").text(allRegionsText))));
-
-            placesJson.forEach(function(geo){
-                var name = (lang == 'fr') ? geo.region.name.fr : geo.region.name.en;
-                var li = $("<li></li>").attr("class", "dropdown-item");
-                var label = $("<label></label>").attr("for", translate(name)+'_id').text(name);
-                var input =$("<input></input>")
-                    .attr("id", translate(name)+'_id')
-                    .attr("type", "checkbox")
-                    .attr("class", "region-selection")
-                    .attr("name","region")
-                    .attr("value", translate(name));
-                li.append(input);
-                li.append(label);
-                rmenu.append(li);
-            });
-            rel.append(rb);
-            rel.append(rmenu);
-
-
-            /* Create the country menu */
-            var cel = $('#inCountriesFilter')
-            cel.empty();
-            var cb = $("<button></button>").attr("type", "button").attr("class", "btn btn-secondary ms-choice").attr("data-toggle", "dropdown").text(countryFilterText);
-            var cmenu = $("<ul></ul>").attr("class", "menu dropdown-menu");
-            cmenu.append($("<li></li>").attr("class", "dropdown-item")
-                .append($("<label></label>")
-                    .append($("<a></a>").attr("href", "#").attr("class", "show-all countries").text(allCountriesText))));
-
-            placesJson.forEach(function(geo){
-                var regionName = (lang == 'fr') ? geo.region.name.fr : geo.region.name.en;
-                var cdiv = $('<div />').attr("class", "country-selector").attr("id", translate(regionName));
-                cdiv.append($('<li></li>').attr("class", "dropdown-item region-group")
-                    .append($("<label></label>").text(regionName)));
-                geo.region.countries.forEach(function(a){
-                    var name = (lang == 'fr') ? a.country.name.fr : a.country.name.en;
-                    var li = $("<li></li>").attr("class", "dropdown-item");
-                    var label = $("<label></label>").attr("for", translate(name)).text(name);
-                    var input = $("<input></input>")
-                        .attr("id", translate(name))
-                        .attr("type", "checkbox")
-                        .attr("class", "country-selection")
-                        .attr("name","country")
-                        .attr("value", translate(name));
-                    li.append(input);
-                    li.append(label);
-                    cmenu.append(cdiv.append(li));
-                });
-            });
-            cel.append(cb);
-            cel.append(cmenu);
-
-
-            // /* Create the city menu */
-            var tel = $('#inCitiesFilter')
-            tel.empty();
-            var tb = $("<button></button>").attr("type", "button").attr("class", "btn btn-secondary ms-choice").attr("data-toggle", "dropdown").text(townFilterText);
-            var tmenu = $("<ul></ul>").attr("class", "menu dropdown-menu");
-            tmenu.append($("<li></li>").attr("class", "dropdown-item")
-                .append($("<label></label>")
-                    .append($("<a></a>").attr("href", "#").attr("class", "show-all cities").text(allCitiesText))));
-
-            placesJson.forEach(function(geo){
-                var regionName = (lang == 'fr') ? geo.region.name.fr : geo.region.name.en;
-                var rdiv = $('<div />').attr("class", "country-selector").attr("id", translate(regionName));
-                rdiv.append($('<li></li>').attr("class", "dropdown-item region-group")
-                    .append($("<label></label>").text(regionName)));
-                geo.region.countries.forEach(function(a){
-                    var countryName = (lang == 'fr') ? a.country.name.fr : a.country.name.en;
-                    var cdiv = $('<div />').attr("class", "city-selector").attr("id", translate(countryName));
-                    cdiv.append($('<li></li>').attr("class", "dropdown-item country-group")
-                        .append($("<label></label>").text(countryName)));
-                    a.country.towns.forEach(function(town) {
-                        var name = (lang == 'fr') ? town.fr : town.en;
-                        var li = $("<li></li>").attr("class", "dropdown-item");
-                        var label = $("<label></label>").attr("for", translate(name)+'_id').text(name);
-                        var input = $("<input></input>")
-                            .attr("type", "checkbox")
-                            .attr("class", "city-selection")
-                            .attr("name","city")
-                            .attr("value", translate(name));
-                        li.append(input);
-                        li.append(label);
-                        cdiv.append(li);
-                    });
-                    rdiv.append(cdiv);
-                });
-                tmenu.append(rdiv);
-            });
-            tel.append(tb);
-            tel.append(tmenu);
-
-        </script>
-        <?php
-    }else{
-        show_error_message($placesUrl, $places['httpCode']);
-    }
 }
 
 /**
@@ -179,7 +51,8 @@ function initPlacesFilterMap($utils, $labels){
  * @description web service call for partners list and list définition
  * @return void
  */
-function getPartnersMap($hostname, $jdata, $labels){
+function getPartnersMap($hostname, $jdata, $labels): void
+{
     ?>
     <script>
         var hostname = <?= json_encode($hostname, JSON_UNESCAPED_UNICODE); ?>;
@@ -205,17 +78,21 @@ function getPartnersMap($hostname, $jdata, $labels){
             const partners = countryMap[ckey];
             const head = partners[0];
 
-            var rel = $("<div></div>").attr("class", "enterprise" + ' ' + translate(head.region.name.fr) + ' ' + translate(head.country.name.fr)).attr("style", "background-color: White");
+            var rKey = (lang == 'fr') ? translate(head.region.name.fr) : translate(head.region.name.en);
+            var cKey = (lang == 'fr') ? translate(head.country.name.fr) : translate(head.country.name.en);
+
+
+            var rel = $("<div></div>").attr("class", "enterprise" + ' ' + rKey + ' ' + cKey).attr("style", "background-color: White");
             var row1 = $("<div></div>").attr("class", "row justify-content-between country-header");
             var country = (lang == 'fr') ? partners[0].country.name.fr : partners[0].country.name.en;
             row1.append($("<h4></h4>").attr("class", "col-4").text(country));
 
-            var contact = $("<div></div>").attr("class", "col-4 float-right contact");
-            var a =$("<a></a>").attr("href", "mailto:" + head.contacts[0].email).attr("class", "button email").attr("title", emailContact);
-            a.append($("<button></button>").attr("class", "icon-white").text(" "));
-            a.append($("<span></span>").attr("class", "label text-right").text(head.contacts[0].name));
-            contact.append(a);
-            row1.append(contact);
+            // var contact = $("<div></div>").attr("class", "col-4 float-right contact");
+            // var a =$("<a></a>").attr("href", "mailto:" + head.contacts[0].email).attr("class", "button email").attr("title", emailContact);
+            // a.append($("<button></button>").attr("class", "icon-white").text(" "));
+            // a.append($("<span></span>").attr("class", "label text-right").text(head.contacts[0].name));
+            // contact.append(a);
+            //row1.append(contact);
             rel.append(row1);
 
             var row2 = $("<div></div>").attr("class", "row");
@@ -326,12 +203,14 @@ function getPartnersMap($hostname, $jdata, $labels){
  * @description method to create the map page
  * @return void
  */
-function getRegions($jdata){
+function getRegions($jdata, $lang): void
+{
     ?>
         <script>
+            var lang = <?= json_encode($lang, JSON_UNESCAPED_UNICODE); ?>;
             var jdata = <?php echo $jdata; ?>;
             var el = $('#map-list').find('#map')
-            var rList = jdata.map(function(d) { return d.region.name.fr });
+            var rList = jdata.map(function(d) { return lang=='fr' ? d.region.name.fr : d.region.name.en });
             var uniqueArray = [...new Set(rList)];
 
             uniqueArray.map((region)=> {
@@ -354,7 +233,8 @@ function getRegions($jdata){
  * @description method to create the section filter
  * @return void
  */
-function initSectionsFilter($utils, $labels){
+function initSectionsFilter($utils, $labels): void
+{
     $sectionsUrl = $utils->hostname . "services/mobilite/sections";
     $sections = $utils->call_service($sectionsUrl);
     if ($sections['httpCode'] === 200) {
@@ -397,7 +277,7 @@ function initSectionsFilter($utils, $labels){
         </script>
         <?php
     }else{
-        show_error_message($sectionsUrl, $sections['httpCode']);
+        show_error_message($sectionsUrl, $sections['httpCode'], $labels);
     }
 }
 

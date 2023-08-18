@@ -35,30 +35,12 @@ function epfl_partner_universities_process_shortcode($atts)
     $partners = $utils->call_service($partnersUrl);
     if ($partners['httpCode'] === 200) {
         getPartners($partners['response'], $labels);
-        initPlacesFilter($utils, $labels['language']);
+        $utils->map = false;
+        $utils->initPlacesFilter($labels);
     }else{
-        $utils->show_error_message($partnersUrl, $partners['httpCode']);
+        $utils->show_error_message($partnersUrl, $partners['httpCode'],$labels);
     }
     return ob_get_clean();
-}
-
-/**
- * @param $utils
- * @param $language
- * @description initialization of the filter
- * @return void
- */
-function initPlacesFilter($utils, $language){
-    $placesUrl = $utils->hostname . "services/mobilite/places";
-    $places = $utils->call_service($placesUrl);
-    if ($places['httpCode'] === 200) {
-        $placesJson = $places['response'];
-        $utils->createRegionMenu($language, $placesJson);
-        $utils->createCountryMenu($language, $placesJson);
-        $utils->createCityMenu($language, $placesJson);
-    }else{
-        show_error_message($placesUrl, $places['httpCode']);
-    }
 }
 
 /**

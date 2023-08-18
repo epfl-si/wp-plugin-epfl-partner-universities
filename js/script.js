@@ -53,14 +53,17 @@ function removeElement(type, value) {
 
 function setElement(type, value) {
     // Select element
-    $('.'+type+'-selection[value="'+value+'"]').attr('checked', true);
+    $('.'+type+'-selection[value="'+value+'"]').prop('checked', true);
 
     // filter out choices
     switch(type) {
         case 'region':
-            $('.country-selector').not('#'+value).hide();
+            $('.country-selector').show();
+            $('.city-selector').show();
+            $('.country-selector:not(#' + value + ')').hide();
             break;
         case 'country':
+            $('.city-selector').show();
             $('.city-selector').not('#'+value).hide();
             break;
     }
@@ -153,7 +156,6 @@ $(document).ready(function() {
     // Reset button
     $('.showall').click(function(e) {
         // reset option bar
-        console.log("tout afficher!!!!!")
         $('.country-selector').show();
         $('.city-selector').show();
         // reset filter
@@ -254,8 +256,8 @@ $(document).ready(function() {
 
     $('#inRegionsFilter').change(function(e) {
         // Reset all country and city selectors
-        $('.country-selection').attr('checked', false);
-        $('.city-selection').attr('checked', false);
+        $('.country-selection').prop('checked', false);
+        $('.city-selection').prop('checked', false);
         // hide all countries
         $('.country-selector').hide();
         // show selected country of selected regions
@@ -269,7 +271,7 @@ $(document).ready(function() {
 
     $('#inCountriesFilter').change(function(e) {
         // Reset all city selectors
-        $('.city-selection').attr('checked', false);
+        $('.city-selection').prop('checked', false);
         $('.city-selector').hide();
         $('.country-selection').each(function(i) {
             var id = $(this).val();
@@ -315,6 +317,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         var link = $(this).attr('href').substring(1);
+
         var type = $(this).attr('data-type');
 
         $('#map-list').hide();
@@ -370,7 +373,7 @@ $(document).ready(function() {
 
     $('.country-hover').hover(hoverin, hoverout);
 
-    $('.option-bar .dropdown').on('mouseover click', function(event) {
+    $('.in-option-bar .dropdown').on('mouseover click', function(event) {
         if($(this).find('.menu').hasClass('hidden')) {
             $(this).find('.menu').removeClass('hidden');
             event.stopPropagation();
@@ -378,11 +381,11 @@ $(document).ready(function() {
     });
 
     $('body').click(function() {
-        $('.option-bar .menu').addClass('hidden');
+        $('.in-option-bar .menu').addClass('hidden');
     });
 
-    $('.option-bar .dropdown').mouseleave(function() {
-        $('.option-bar .menu').addClass('hidden');
+    $('.in-option-bar .dropdown').mouseleave(function() {
+        $('.in-option-bar .menu').addClass('hidden');
     });
 
 });

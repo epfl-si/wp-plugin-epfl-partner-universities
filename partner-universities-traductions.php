@@ -31,6 +31,13 @@ class Traduction{
             $labels['placeDisponibles'] = 'Nombre de places disponibles total';
             $labels['universityInformation'] = 'Plus d\'informations sur le site de l\'université partenaire';
             $labels['fichePDF'] = 'Fiche de l\'université partenaire (PDF)';
+            $labels['afriqueId'] = 'afrique';
+            $labels['europeId'] = 'europe';
+            $labels['ameriqueNordId'] = 'amerique-du-nord';
+            $labels['ameriqueSudId'] = 'amerique-du-sud';
+            $labels['asieId'] = 'asie';
+            $labels['oceanieId'] = 'oceanie';
+            $labels['errorMessage'] = 'We\'re sorry, but an error occurred while processing your request. Please try again later or contact our support team for assistance.';
         } else {
             $labels['language'] = 'en';
             $labels['regionFilterText'] = "Region";
@@ -47,8 +54,8 @@ class Traduction{
             $labels['selectFilterText'] = 'All sections';
             $labels['sectionText'] = 'Sections';
             $labels['remText'] = 'Remarks';
-            $labels['ameriqueNord'] = 'Nord-America';
-            $labels['ameriqueSud'] = 'Sud-America';
+            $labels['ameriqueNord'] = 'North-America';
+            $labels['ameriqueSud'] = 'South-America';
             $labels['europe'] = 'Europe';
             $labels['afrique'] = 'Africa';
             $labels['asie'] = 'Asia';
@@ -57,6 +64,13 @@ class Traduction{
             $labels['placeDisponibles'] = 'Number of total available slots';
             $labels['universityInformation'] = 'More information on the website of the partner university';
             $labels['fichePDF'] = 'Fact sheet of the partner university (PDF)';
+            $labels['afriqueId'] = 'africa';
+            $labels['europeId'] = 'europe';
+            $labels['ameriqueNordId'] = 'north-america';
+            $labels['ameriqueSudId'] = 'south-america';
+            $labels['asieId'] = 'asia';
+            $labels['oceanieId'] = 'oceania';
+            $labels['errorMessage'] = 'We\'re sorry, but an error occurred while processing your request. Please try again later or contact our support team for assistance.';
         }
         return $labels;
     }

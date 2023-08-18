@@ -66,10 +66,22 @@
 #map #world .amerique-du-nord.active.hover {
     background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/namerica_over.gif');
 }
+#map #world .north-america.active {
+    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/namerica.gif');
+}
+#map #world .north-america.active.hover {
+    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/namerica_over.gif');
+}
 #map #world .amerique-du-sud.active {
    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/samerica.gif');
 }
 #map #world .amerique-du-sud.active.hover {
+    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/samerica_over.gif');
+}
+#map #world .south-america.active {
+    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/samerica.gif');
+}
+#map #world .south-america.active.hover {
     background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/samerica_over.gif');
 }
 #map #world .asie.active {
@@ -78,10 +90,22 @@
 #map #world .asie.active.hover {
     background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/asia_over.gif');
 }
+#map #world .asia.active {
+    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/asia.gif');
+}
+#map #world .asia.active.hover {
+    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/asia_over.gif');
+}
 #map #world .oceanie.active {
     background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/australia.gif');
 }
 #map #world .oceanie.active.hover {
+    background: url('https://www.epfl.ch//education/mobility/wp-content/uploads/2018/12/australia_over.gif');
+}
+#map #world .oceania.active {
+    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/australia.gif');
+}
+#map #world .oceania.active.hover {
     background: url('https://www.epfl.ch//education/mobility/wp-content/uploads/2018/12/australia_over.gif');
 }
 #map #africa {
@@ -120,6 +144,36 @@
     width: 130px;
     height: 100px;
 }
+#map #europe {
+    top: 25px;
+    left: 260px;
+    width: 110px;
+    height: 80px;
+}
+#map #north-america {
+    top: 0px;
+    left: 20px;
+    width: 230px;
+    height: 150px;
+}
+#map #south-america {
+    bottom: 0;
+    left: 110px;
+    width: 120px;
+    height: 170px;
+}
+#map #asia {
+    top: 10px;
+    left: 380px;
+    width: 300px;
+    height: 160px;
+}
+#map #oceania {
+    top: 210px;
+    right: 0px;
+    width: 130px;
+    height: 100px;
+}
 
 #map-list-footer {
     padding-top: 20px;
@@ -149,6 +203,13 @@
     color: rgb(168,14,23);
     text-decoration: underline;
 }
+#map-list-footer #asia-footer.active {
+    color: rgb(227,7,19);
+}
+#map-list-footer #asia-footer.hover {
+    color: rgb(168,14,23);
+    text-decoration: underline;
+}
 
 #map-list-footer #europe-footer.active {
     color: rgb(227,7,19);
@@ -165,6 +226,13 @@
     color: rgb(168,14,23);
     text-decoration: underline;
 }
+#map-list-footer #north-america-footer.active {
+    color: rgb(227,7,19);
+}
+#map-list-footer #north-america-footer.hover {
+    color: rgb(168,14,23);
+    text-decoration: underline;
+}
 
 #map-list-footer #amerique-du-sud-footer.active {
     color: rgb(227,7,19);
@@ -174,10 +242,26 @@
     text-decoration: underline;
 }
 
+#map-list-footer #south-america-footer.active {
+    color: rgb(227,7,19);
+}
+#map-list-footer #south-america-footer.hover {
+    color: rgb(168,14,23);
+    text-decoration: underline;
+}
+
 #map-list-footer #oceanie-footer.active {
     color: rgb(227,7,19);
 }
 #map-list-footer #oceanie-footer.hover {
+    color: rgb(168,14,23);
+    text-decoration: underline;
+}
+
+#map-list-footer #oceania-footer.active {
+    color: rgb(227,7,19);
+}
+#map-list-footer #oceania-footer.hover {
     color: rgb(168,14,23);
     text-decoration: underline;
 }
