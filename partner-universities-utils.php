@@ -33,7 +33,7 @@ class Utils{
     {
         //$message = $url . ' - ' . $error;
         echo '<div class="error-container">';
-        echo '<h1>Oops, something went wrong!</h1>';
+        //echo '<h1>Oops, something went wrong!</h1>';
         echo '<p>' . $labels['errorMessage'] . '</p>';
         echo '</div>';
     }
