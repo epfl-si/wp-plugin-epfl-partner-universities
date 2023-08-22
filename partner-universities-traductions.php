@@ -1,6 +1,6 @@
 <?php
 
-class Traduction{
+class PartnerUniversitiesTraduction{
 
     public function translateLabels($lang): array
     {
@@ -37,7 +37,7 @@ class Traduction{
             $labels['ameriqueSudId'] = 'amerique-du-sud';
             $labels['asieId'] = 'asie';
             $labels['oceanieId'] = 'oceanie';
-            $labels['errorMessage'] = 'We\'re sorry, but an error occurred while processing your request. Please try again later or contact our support team for assistance.';
+            $labels['errorMessage'] = 'Cette page n\'est actuellement pas disponible.';
         } else {
             $labels['language'] = 'en';
             $labels['regionFilterText'] = "Region";
@@ -70,7 +70,7 @@ class Traduction{
             $labels['ameriqueSudId'] = 'south-america';
             $labels['asieId'] = 'asia';
             $labels['oceanieId'] = 'oceania';
-            $labels['errorMessage'] = 'We\'re sorry, but an error occurred while processing your request. Please try again later or contact our support team for assistance.';
+            $labels['errorMessage'] = 'This page is temporarily unavailable.';
         }
         return $labels;
     }

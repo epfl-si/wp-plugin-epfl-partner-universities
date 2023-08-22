@@ -1,9 +1,9 @@
 <?php
 
-class Utils{
+class PartnerUniversitiesUtils{
 
     public string $hostname = "https://isa.epfl.ch/";
-    public bool $map = false;
+    public string $map = "";
 
     /**
      * @param $url
@@ -26,21 +26,23 @@ class Utils{
     /**
      * @param $url
      * @param $error
+     * @param $labels
      * @description method to show the error message in the page after calling web service
      * @return void
      */
     public function show_error_message($url,$error, $labels): void
     {
-        //$message = $url . ' - ' . $error;
-        echo '<div class="error-container">';
-        //echo '<h1>Oops, something went wrong!</h1>';
-        echo '<p>' . $labels['errorMessage'] . '</p>';
-        echo '</div>';
+        $html = '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+        $html .= '<strong> Warning </strong><p>' . $labels['errorMessage'] . '</p>';
+        $html .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+        $html .= '  <span aria-hidden="true">&times;</span>';
+        $html .= '</button>';
+        $html .= '</div>';
+        echo $html;
     }
 
     /**
-     * @param $utils
-     * @param $language
+     * @param $labels
      * @description initialization of the filter
      * @return void
      */
@@ -62,7 +64,6 @@ class Utils{
     /**
      * @param $labels
      * @param $placesJson
-     * @param $map
      * @return void
      * @description method to create the region dropdown menu
      */
@@ -72,8 +73,8 @@ class Utils{
             <script>
                 var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
                 var placesJson = <?php echo $placesJson; ?>;
-                var map = <?php echo $this->map ? 'true' : 'false'; ?>;
-                if(map){
+                var map = <?= json_encode($this->map, JSON_UNESCAPED_UNICODE); ?>;
+                if(map =='OUT'){
                     var allRegionsText = <?= json_encode($labels['allRegionsText'], JSON_UNESCAPED_UNICODE); ?>;
                     var regionFilterText = <?= json_encode($labels['regionFilterText'], JSON_UNESCAPED_UNICODE); ?>;
                     var rel = $('#inRegionsFilter');
@@ -100,7 +101,7 @@ class Utils{
                     li.append(label);
                     rmenu.append(li);
                 });
-                if(map){
+                if(map =='OUT'){
                     rel.append(rb);
                     rel.append(rmenu);
                 }
@@ -111,7 +112,6 @@ class Utils{
     /**
      * @param $labels
      * @param $placesJson
-     * @param $map
      * @return void
      * @description method to create the country dropdown menu
      */
@@ -121,8 +121,8 @@ class Utils{
         <script>
             var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
             var placesJson = <?php echo $placesJson; ?>;
-            var map = <?php echo $this->map ? 'true' : 'false'; ?>;
-            if(map){
+            var map = <?= json_encode($this->map, JSON_UNESCAPED_UNICODE); ?>;
+            if(map =='OUT'){
                 var countryFilterText = <?= json_encode($labels['countryFilterText'], JSON_UNESCAPED_UNICODE); ?>;
                 var allCountriesText = <?= json_encode($labels['allCountriesText'], JSON_UNESCAPED_UNICODE); ?>;
                 var cel = $('#inCountriesFilter')
@@ -155,7 +155,7 @@ class Utils{
                     cmenu.append(cdiv.append(li));
                 });
             });
-            if(map){
+            if(map =='OUT'){
                 cel.append(cb);
                 cel.append(cmenu);
             }
@@ -166,7 +166,6 @@ class Utils{
     /**
      * @param $labels
      * @param $placesJson
-     * @param $map
      * @return void
      * @description method to create the city dropdown menu
      */
@@ -176,8 +175,8 @@ class Utils{
         <script>
             var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
             var placesJson = <?php echo $placesJson; ?>;
-            var map = <?php echo $this->map ? 'true' : 'false'; ?>;
-            if(map){
+            var map = <?= json_encode($this->map, JSON_UNESCAPED_UNICODE); ?>;
+            if(map =='OUT'){
                 var townFilterText = <?= json_encode($labels['townFilterText'], JSON_UNESCAPED_UNICODE); ?>;
                 var allCitiesText = <?= json_encode($labels['allCitiesText'], JSON_UNESCAPED_UNICODE); ?>;
                 var tel = $('#inCitiesFilter')
@@ -217,7 +216,7 @@ class Utils{
                 });
                 tmenu.append(rdiv);
             });
-            if(map){
+            if(map =='OUT'){
                 tel.append(tb);
                 tel.append(tmenu);
             }

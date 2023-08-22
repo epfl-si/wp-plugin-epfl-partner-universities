@@ -29,3 +29,10 @@ Utility class for traslantions.
 
 _partner-universities-utils.php_ :
 Utility class for all common methods.
+
+## How to use shortcode
+[epfl_partner_universities language='FR/EN' exchange='IN/OUT']
+
+## Pages where it's used
+- OUT: https://www.epfl.ch/education/international/en/studying-abroad/bachelor-exchange/partner-universities/
+- IN: https://www.epfl.ch/education/international/en/coming-to-epfl/semester-courses/partner-universities-in/
