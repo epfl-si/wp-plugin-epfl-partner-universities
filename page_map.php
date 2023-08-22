@@ -21,6 +21,9 @@
         </div>
     </div>
     <div id="enterprise-list" class="container">
+        <div class="alert alert-info fade show" role="alert">
+            <p><?php echo $labels['OUTMessage']; ?></p>
+        </div>
         <div class="row in-option-bar filter-bar">
             <div id="inSectionsFilter" class="col-sm-2 dropdown form-group hidden"></div>
             <div id="inRegionsFilter" class="col-sm-2 dropdown form-group hidden"></div>

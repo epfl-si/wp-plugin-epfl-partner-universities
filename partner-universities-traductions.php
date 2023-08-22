@@ -37,7 +37,8 @@ class PartnerUniversitiesTraduction{
             $labels['ameriqueSudId'] = 'amerique-du-sud';
             $labels['asieId'] = 'asie';
             $labels['oceanieId'] = 'oceanie';
-            $labels['errorMessage'] = 'Cette page n\'est actuellement pas disponible.';
+            $labels['errorMessage'] = 'Cette page n\'est actuellement pas disponible - N’hésitez pas à nous en informer au <a href="mailto:1234@epfl.ch">1234@epfl.ch</a>.';
+            $labels['OUTMessage'] = 'Pour toute question spécifique concernant ces destinations d’échange pour la 3e année Bachelor, vous pouvez écrire à <a href="mailto:sac-exchange-out@epfl.ch">sac-exchange-out@epfl.ch</a>. Veuillez indiquer dans le titre de votre courriel le ou les pays concernés par vos questions.';
         } else {
             $labels['language'] = 'en';
             $labels['regionFilterText'] = "Region";
@@ -70,7 +71,8 @@ class PartnerUniversitiesTraduction{
             $labels['ameriqueSudId'] = 'south-america';
             $labels['asieId'] = 'asia';
             $labels['oceanieId'] = 'oceania';
-            $labels['errorMessage'] = 'This page is temporarily unavailable.';
+            $labels['errorMessage'] = 'This page is temporarily unavailable – let us know at <a href="mailto:1234@epfl.ch">1234@epfl.ch</a>.';
+            $labels['OUTMessage'] = 'If you have any specific questions about these exchange destinations for the 3rd year Bachelor\'s programme, please write to <a href="mailto:sac-exchange-out@epfl.ch">sac-exchange-out@epfl.ch</a>. Please indicate in the title of your e-mail the country or countries you are enquiring about.';
         }
         return $labels;
     }
