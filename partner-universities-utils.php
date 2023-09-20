@@ -57,8 +57,8 @@ class PartnerUniversitiesUtils
 			var placesJson = <?php echo $placesJson; ?>;
 			var map = <?= json_encode($this->map, JSON_UNESCAPED_UNICODE); ?>;
 			if (map == 'OUT') {
-				var allRegionsText = <?= json_encode($labels['allRegionsText'], JSON_UNESCAPED_UNICODE); ?>;
-				var regionFilterText = <?= json_encode($labels['regionFilterText'], JSON_UNESCAPED_UNICODE); ?>;
+				var allRegionsText = '<?php _e('allRegionsText','epfl_partner_universities'); ?>';
+				var regionFilterText = '<?php _e('regionFilterText','epfl_partner_universities'); ?>';
 				var rel = $('#inRegionsFilter');
 				rel.empty();
 				var rb = $("<button></button>").attr("type", "button").attr("class", "btn btn-secondary ms-choice").attr("data-toggle", "dropdown").text(regionFilterText);
@@ -105,8 +105,8 @@ class PartnerUniversitiesUtils
 			var placesJson = <?php echo $placesJson; ?>;
 			var map = <?= json_encode($this->map, JSON_UNESCAPED_UNICODE); ?>;
 			if (map == 'OUT') {
-				var countryFilterText = <?= json_encode($labels['countryFilterText'], JSON_UNESCAPED_UNICODE); ?>;
-				var allCountriesText = <?= json_encode($labels['allCountriesText'], JSON_UNESCAPED_UNICODE); ?>;
+				var countryFilterText = '<?php _e('countryFilterText','epfl_partner_universities'); ?>';
+				var allCountriesText = '<?php _e('allCountriesText','epfl_partner_universities'); ?>';
 				var cel = $('#inCountriesFilter')
 				cel.empty();
 				var cb = $("<button></button>").attr("type", "button").attr("class", "btn btn-secondary ms-choice").attr("data-toggle", "dropdown").text(countryFilterText);
@@ -159,8 +159,8 @@ class PartnerUniversitiesUtils
 			var placesJson = <?php echo $placesJson; ?>;
 			var map = <?= json_encode($this->map, JSON_UNESCAPED_UNICODE); ?>;
 			if (map == 'OUT') {
-				var townFilterText = <?= json_encode($labels['townFilterText'], JSON_UNESCAPED_UNICODE); ?>;
-				var allCitiesText = <?= json_encode($labels['allCitiesText'], JSON_UNESCAPED_UNICODE); ?>;
+				var townFilterText = '<?php _e('townFilterText','epfl_partner_universities'); ?>';
+				var allCitiesText = '<?php _e('allCitiesText','epfl_partner_universities'); ?>';
 				var tel = $('#inCitiesFilter')
 				tel.empty();
 				var tb = $("<button></button>").attr("type", "button").attr("class", "btn btn-secondary ms-choice").attr("data-toggle", "dropdown").text(townFilterText);
@@ -204,23 +204,5 @@ class PartnerUniversitiesUtils
 			}
 		</script>
 		<?php
-	}
-
-	/**
-	 * @param $url
-	 * @param $error
-	 * @param $labels
-	 * @description method to show the error message in the page after calling web service
-	 * @return void
-	 */
-	public function show_error_message($url, $error, $labels): void
-	{
-		$html = '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
-		$html .= '<strong> Warning </strong><p>' . $labels['errorMessage'] . '</p>';
-		$html .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-		$html .= '  <span aria-hidden="true">&times;</span>';
-		$html .= '</button>';
-		$html .= '</div>';
-		echo $html;
 	}
 }

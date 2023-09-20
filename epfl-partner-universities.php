@@ -1,10 +1,12 @@
 <?php
 /*
-Plugin Name:  EPFL Partner Universities
-Description:  Provides a shortcode to display all partner universities
-Version:      1.0.0
-Author:       Rosa Maggi (Renato Kempter (renato.kempter@gmail.com) 2013 - Tim Brigginshaw EPFL (tim.brigginshaw@epfl.ch) 2018)
-License: Copyright (c) 2021 Ecole Polytechnique Federale de Lausanne, Switzerland
+ * Plugin Name:  EPFL Partner Universities
+ * Description:  Provides a shortcode to display all partner universities
+ * Version:      1.0.2
+ * Author:       Rosa Maggi (Renato Kempter (renato.kempter@gmail.com) 2013 - Tim Brigginshaw EPFL (tim.brigginshaw@epfl.ch) 2018)
+ * License: 	 Copyright (c) 2021 Ecole Polytechnique Federale de Lausanne, Switzerland
+ * Text Domain:  epfl_partner_universities
+ * Domain Path:  /languages
 */
 
 $labels = [];
@@ -51,7 +53,7 @@ function epfl_partner_universities_process_shortcode($atts)
         }
         $utils->initPlacesFilter($labels);
     } else {
-        $utils->show_error_message($callUrl, $partners['httpCode'], $labels);
+		include('error_page.php');
     }
     return ob_get_clean();
 }
@@ -67,8 +69,8 @@ function getPartners($jdata, $labels)
     ?>
     <script>
         var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
-        var cityLabel = <?= json_encode($labels['cityLabel'], JSON_UNESCAPED_UNICODE); ?>;
-        var universityLabel = <?= json_encode($labels['universityLabel'], JSON_UNESCAPED_UNICODE); ?>;
+        var cityLabel = '<?php _e('cityLabel','epfl_partner_universities'); ?>';
+        var universityLabel = '<?php _e('universityLabel','epfl_partner_universities'); ?>';
 
         partnersData = <?php echo $jdata; ?>;
 
@@ -129,12 +131,11 @@ function getPartners($jdata, $labels)
 }
 
 /**
+ * @param $hostname
  * @param $jdata
- * @param $language
- * @param $cityLabel
- * @param $universityLabel
- * @description web service call for partners list and list définition
+ * @param $labels
  * @return void
+ * @description web service call for partners list and list définition
  */
 function getPartnersMap($hostname, $jdata, $labels): void
 {
@@ -142,14 +143,14 @@ function getPartnersMap($hostname, $jdata, $labels): void
     <script>
         var hostname = <?= json_encode($hostname, JSON_UNESCAPED_UNICODE); ?>;
         var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
-        var cityLabel = <?= json_encode($labels['cityLabel'], JSON_UNESCAPED_UNICODE); ?>;
-        var universityLabel = <?= json_encode($labels['universityLabel'], JSON_UNESCAPED_UNICODE); ?>;
-        var sectionText = <?= json_encode($labels['sectionText'], JSON_UNESCAPED_UNICODE); ?>;
-        var remText = <?= json_encode($labels['remText'], JSON_UNESCAPED_UNICODE); ?>;
-        var emailContact = <?= json_encode($labels['emailContact'], JSON_UNESCAPED_UNICODE); ?>;
-        var placeDisponibles = <?= json_encode($labels['placeDisponibles'], JSON_UNESCAPED_UNICODE); ?>;
-        var universityInformation = <?= json_encode($labels['universityInformation'], JSON_UNESCAPED_UNICODE); ?>;
-        var fichePDF = <?= json_encode($labels['fichePDF'], JSON_UNESCAPED_UNICODE); ?>;
+        var cityLabel = '<?php _e('cityLabel','epfl_partner_universities'); ?>';
+        var universityLabel = '<?php _e('universityLabel','epfl_partner_universities'); ?>';
+        var sectionText = '<?php _e('sectionText','epfl_partner_universities'); ?>';
+        var remText = '<?php _e('remText','epfl_partner_universities'); ?>';
+        var emailContact = "<?php _e('emailContact','epfl_partner_universities'); ?>";
+        var placeDisponibles = '<?php _e('placeDisponibles','epfl_partner_universities'); ?>';
+        var universityInformation = "<?php _e('universityInformation','epfl_partner_universities'); ?>";
+        var fichePDF = "<?php _e('fichePDF','epfl_partner_universities'); ?>";
 
         partnersData = <?php echo $jdata; ?>;
 
@@ -344,7 +345,7 @@ function initSectionsFilter($utils, $labels): void
         ?>
         <script>
             var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
-            var selectFilterText = <?= json_encode($labels['selectFilterText'], JSON_UNESCAPED_UNICODE); ?>;
+            var selectFilterText = '<?php _e('selectFilterText','epfl_partner_universities'); ?>';
             var sectionsJson = <?php echo $sectionsJson; ?>;
             var sel = $("#inSectionsFilter")
 
@@ -378,11 +379,10 @@ function initSectionsFilter($utils, $labels): void
             sel.append(smenu);
         </script>
         <?php
-    } else {
-        show_error_message($sectionsUrl, $sections['httpCode'], $labels);
     }
 }
 
 add_action('init', function () {
     add_shortcode('epfl_partner_universities', 'epfl_partner_universities_process_shortcode');
+	load_plugin_textdomain( 'epfl_partner_universities', false, 'epfl-partner-universities/languages/' );
 });
