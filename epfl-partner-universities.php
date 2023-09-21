@@ -9,8 +9,6 @@
  * Domain Path:  /languages
 */
 
-$labels = [];
-
 function epfl_partner_universities_process_shortcode($atts)
 {
     ob_start();
@@ -21,17 +19,15 @@ function epfl_partner_universities_process_shortcode($atts)
 
     /*include all required classes*/
     require_once('partner-universities-utils.php');
-    require_once('partner-universities-traductions.php');
     ?>
     <script><?php require_once("js/script.js"); ?></script><?php
     wp_enqueue_style('epfl_partner_universities_style', plugin_dir_url(__FILE__) . 'css/styles.css', [], '2.1');
 
     /*initialization of utility classes*/
     $utils = new PartnerUniversitiesUtils();
-    $translation = new PartnerUniversitiesTraduction();
 
     /*prepare the page*/
-    $labels = $translation->translateLabels($atts['language']);
+    $language = strtolower($atts['language']);
     $utils->map = $atts['exchange'];
     if ($atts['exchange'] == 'IN') {
         $callUrl = $utils->hostname . "services/mobilite/partners";
@@ -44,14 +40,14 @@ function epfl_partner_universities_process_shortcode($atts)
     if ($partners['httpCode'] === 200) {
         if ($atts['exchange'] == 'IN') {
             include('page_list.php');
-            getPartners($partners['response'], $labels);
+            getPartners($partners['response'], $language);
         } else {
             include('page_map.php');
-            getRegions($partners['response'], $labels["language"]);
-            getPartnersMap($utils->hostname, $partners['response'], $labels);
-            initSectionsFilter($utils, $labels);
+            getRegions($partners['response'], $language);
+            getPartnersMap($utils->hostname, $partners['response'], $language);
+            initSectionsFilter($utils, $language);
         }
-        $utils->initPlacesFilter($labels);
+        $utils->initPlacesFilter($language);
     } else {
 		include('error_page.php');
     }
@@ -60,15 +56,15 @@ function epfl_partner_universities_process_shortcode($atts)
 
 /**
  * @param $jdata
- * @param $labels
+ * @param $language
  * @description web service call for partners list and list definition
  * @return void
  */
-function getPartners($jdata, $labels)
+function getPartners($jdata, $language)
 {
     ?>
     <script>
-        var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
+        var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
         var cityLabel = '<?php _e('cityLabel','epfl_partner_universities'); ?>';
         var universityLabel = '<?php _e('universityLabel','epfl_partner_universities'); ?>';
 
@@ -133,16 +129,16 @@ function getPartners($jdata, $labels)
 /**
  * @param $hostname
  * @param $jdata
- * @param $labels
+ * @param $language
  * @return void
  * @description web service call for partners list and list définition
  */
-function getPartnersMap($hostname, $jdata, $labels): void
+function getPartnersMap($hostname, $jdata, $language): void
 {
     ?>
     <script>
         var hostname = <?= json_encode($hostname, JSON_UNESCAPED_UNICODE); ?>;
-        var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
+        var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
         var cityLabel = '<?php _e('cityLabel','epfl_partner_universities'); ?>';
         var universityLabel = '<?php _e('universityLabel','epfl_partner_universities'); ?>';
         var sectionText = '<?php _e('sectionText','epfl_partner_universities'); ?>';
@@ -301,14 +297,15 @@ function getPartnersMap($hostname, $jdata, $labels): void
 
 /**
  * @param $jdata
+ * @param $language
  * @description method to create the map page
  * @return void
  */
-function getRegions($jdata, $lang): void
+function getRegions($jdata, $language): void
 {
     ?>
     <script>
-        var lang = <?= json_encode($lang, JSON_UNESCAPED_UNICODE); ?>;
+        var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
         var jdata = <?php echo $jdata; ?>;
         var el = $('#map-list').find('#map')
         var rList = jdata.map(function (d) {
@@ -332,11 +329,11 @@ function getRegions($jdata, $lang): void
 
 /**
  * @param $utils
- * @param $labels
+ * @param $language
  * @description method to create the section filter
  * @return void
  */
-function initSectionsFilter($utils, $labels): void
+function initSectionsFilter($utils, $language): void
 {
     $sectionsUrl = $utils->hostname . "services/mobilite/sections";
     $sections = $utils->call_service($sectionsUrl);
@@ -344,7 +341,7 @@ function initSectionsFilter($utils, $labels): void
         $sectionsJson = $sections['response'];
         ?>
         <script>
-            var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
+            var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
             var selectFilterText = '<?php _e('selectFilterText','epfl_partner_universities'); ?>';
             var sectionsJson = <?php echo $sectionsJson; ?>;
             var sel = $("#inSectionsFilter")

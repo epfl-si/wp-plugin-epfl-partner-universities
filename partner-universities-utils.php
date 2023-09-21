@@ -7,21 +7,21 @@ class PartnerUniversitiesUtils
 	public string $map = "";
 
 	/**
-	 * @param $labels
+	 * @param $language
 	 * @description initialization of the filter
 	 * @return void
 	 */
-	public function initPlacesFilter($labels): void
+	public function initPlacesFilter($language): void
 	{
 		$placesUrl = $this->hostname . "services/mobilite/places";
 		$places = $this->call_service($placesUrl);
 		if ($places['httpCode'] === 200) {
 			$placesJson = $places['response'];
-			$this->createRegionMenu($labels, $placesJson);
-			$this->createCountryMenu($labels, $placesJson);
-			$this->createCityMenu($labels, $placesJson);
+			$this->createRegionMenu($language, $placesJson);
+			$this->createCountryMenu($language, $placesJson);
+			$this->createCityMenu($language, $placesJson);
 		} else {
-			$this->show_error_message($placesUrl, $places['httpCode'], $labels);
+			include('error_page.php');
 		}
 	}
 
@@ -44,16 +44,16 @@ class PartnerUniversitiesUtils
 	}
 
 	/**
-	 * @param $labels
+	 * @param $language
 	 * @param $placesJson
 	 * @return void
 	 * @description method to create the region dropdown menu
 	 */
-	public function createRegionMenu($labels, $placesJson): void
+	public function createRegionMenu($language, $placesJson): void
 	{
 		?>
 		<script>
-			var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
+			var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
 			var placesJson = <?php echo $placesJson; ?>;
 			var map = <?= json_encode($this->map, JSON_UNESCAPED_UNICODE); ?>;
 			if (map == 'OUT') {
@@ -92,16 +92,16 @@ class PartnerUniversitiesUtils
 	}
 
 	/**
-	 * @param $labels
+	 * @param $language
 	 * @param $placesJson
 	 * @return void
 	 * @description method to create the country dropdown menu
 	 */
-	public function createCountryMenu($labels, $placesJson): void
+	public function createCountryMenu($language, $placesJson): void
 	{
 		?>
 		<script>
-			var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
+			var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
 			var placesJson = <?php echo $placesJson; ?>;
 			var map = <?= json_encode($this->map, JSON_UNESCAPED_UNICODE); ?>;
 			if (map == 'OUT') {
@@ -146,16 +146,16 @@ class PartnerUniversitiesUtils
 	}
 
 	/**
-	 * @param $labels
+	 * @param $language
 	 * @param $placesJson
 	 * @return void
 	 * @description method to create the city dropdown menu
 	 */
-	public function createCityMenu($labels, $placesJson): void
+	public function createCityMenu($language, $placesJson): void
 	{
 		?>
 		<script>
-			var lang = <?= json_encode($labels['language'], JSON_UNESCAPED_UNICODE); ?>;
+			var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
 			var placesJson = <?php echo $placesJson; ?>;
 			var map = <?= json_encode($this->map, JSON_UNESCAPED_UNICODE); ?>;
 			if (map == 'OUT') {
