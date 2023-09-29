@@ -22,6 +22,9 @@
 	</div>
 	<div id="enterprise-list" class="container">
 		<div class="alert alert-info fade show" role="alert">
+			<p><?php  _e('OUTMessageParticularities','epfl_partner_universities'); ?></p>
+		</div>
+		<div class="alert alert-info fade show" role="alert">
 			<p><?php  _e('OUTMessage','epfl_partner_universities'); ?></p>
 		</div>
 		<div class="row in-option-bar filter-bar">

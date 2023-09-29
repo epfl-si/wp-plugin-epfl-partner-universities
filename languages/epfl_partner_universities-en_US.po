@@ -3,18 +3,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: EPFL Partner Universities 1.0.2\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/epfl-partner-"
-"universities\n"
+"Report-Msgid-Bugs-To: https://github.com/wp-cli/i18n-command/issues\n"
+"POT-Creation-Date: 2023-09-27T11:07:10+02:00\n"
+"PO-Revision-Date: 2023-09-19 13:42+0200\n"
 "Last-Translator: Rosa Maggi <rosa.maggi@epfl.ch>\n"
 "Language-Team: English\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-19T13:31:29+02:00\n"
-"PO-Revision-Date: 2023-09-19 13:42+0200\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: epfl_partner_universities\n"
-"Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Plugin Name of the plugin
@@ -33,41 +32,51 @@ msgstr ""
 "Rosa Maggi (Renato Kempter (renato.kempter@gmail.com) 2013 - Tim Brigginshaw "
 "EPFL (tim.brigginshaw@epfl.ch) 2018)"
 
-#: epfl-partner-universities.php:72 epfl-partner-universities.php:147
+#: epfl-partner-universities.php:68 epfl-partner-universities.php:142
 msgid "cityLabel"
 msgstr "City"
 
-#: epfl-partner-universities.php:73 epfl-partner-universities.php:148
+#: epfl-partner-universities.php:69 epfl-partner-universities.php:143
 msgid "universityLabel"
 msgstr "University"
 
-#: epfl-partner-universities.php:149
+#: epfl-partner-universities.php:144
 msgid "sectionText"
 msgstr "Section"
 
-#: epfl-partner-universities.php:150
+#: epfl-partner-universities.php:145
 msgid "remText"
 msgstr "Remarks"
 
-#: epfl-partner-universities.php:151
+#: epfl-partner-universities.php:146
 msgid "emailContact"
 msgstr "E-mail of the contact person at EPFL"
 
-#: epfl-partner-universities.php:152
+#: epfl-partner-universities.php:147
 msgid "placeDisponibles"
 msgstr "Number of total available slots"
 
-#: epfl-partner-universities.php:153
+#: epfl-partner-universities.php:148
 msgid "universityInformation"
 msgstr "More information on the website of the partner university"
 
-#: epfl-partner-universities.php:154
+#: epfl-partner-universities.php:149
 msgid "fichePDF"
 msgstr "Fact sheet of the partner university (PDF)"
 
-#: epfl-partner-universities.php:349
+#: epfl-partner-universities.php:345
 msgid "selectFilterText"
 msgstr "All sections"
+
+#: error_page.php:2
+msgid "warning"
+msgstr "Warning"
+
+#: error_page.php:2
+msgid "errorMessage"
+msgstr ""
+"This page is temporarily unavailable – let us know at <a "
+"href=\"mailto:1234@epfl.ch\">1234@epfl.ch</a>."
 
 #: page_list.php:5 partner-universities-utils.php:61
 msgid "regionFilterText"
@@ -93,7 +102,7 @@ msgstr "City"
 msgid "allCitiesText"
 msgstr "All cities"
 
-#: page_list.php:35 page_map.php:37
+#: page_list.php:35 page_map.php:40
 msgid "showAll"
 msgstr "Show all"
 
@@ -146,17 +155,17 @@ msgid "oceanie"
 msgstr "Oceania"
 
 #: page_map.php:25
-msgid "OUTMessage"
-msgstr "If you have any specific questions about these exchange destinations for the 3rd year Bachelor's programme, please write to <a href=\"mailto:sac-exchange-out@epfl.ch\">sac-exchange-out@epfl.ch</a>. Please indicate in the title of your e-mail the country or countries you are enquiring about."
+msgid "OUTMessageParticularities"
+msgstr "Certain universities have particularities which could influence your choice. We invite you to take note of these specificities in <a href=\"https://www.epfl.ch/education/international/wp-content/uploads/2023/09/InfosImportantesPartenaires.xlsx\">this file</a> (in French only). This list is not exhaustive. It is updated with the information we receive from our partner universities or from students who are on exchange. It can change at any time."
 
-#: page_map.php:44
+#: page_map.php:28
+msgid "OUTMessage"
+msgstr ""
+"If you have any specific questions about these exchange destinations for the "
+"3rd year Bachelor's programme, please write to <a href=\"mailto:sac-exchange-"
+"out@epfl.ch\">sac-exchange-out@epfl.ch</a>. Please indicate in the title of "
+"your e-mail the country or countries you are enquiring about."
+
+#: page_map.php:47
 msgid "showMap"
 msgstr "View Map"
-
-#: partner-universities-utils.php:219
-msgid "warning"
-msgstr "Warning"
-
-#: partner-universities-utils.php:219
-msgid "errorMessage"
-msgstr "This page is temporarily unavailable – let us know at <a href=\"mailto:1234@epfl.ch\">1234@epfl.ch</a>."
