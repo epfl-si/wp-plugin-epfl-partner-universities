@@ -1,0 +1,162 @@
+# Copyright (C) 2023 Rosa Maggi (Renato Kempter (renato.kempter@gmail.com) 2013 - Tim Brigginshaw EPFL (tim.brigginshaw@epfl.ch) 2018)
+# This file is distributed under the Copyright (c) 2021 Ecole Polytechnique Federale de Lausanne, Switzerland.
+msgid ""
+msgstr ""
+"Project-Id-Version: EPFL Partner Universities 1.0.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/epfl-partner-"
+"universities\n"
+"Last-Translator: Rosa Maggi <rosa.maggi@epfl.ch>\n"
+"Language-Team: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-09-19T13:31:29+02:00\n"
+"PO-Revision-Date: 2023-09-19 13:42+0200\n"
+"X-Generator: WP-CLI 2.8.1\n"
+"X-Domain: epfl_partner_universities\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Plugin Name of the plugin
+msgid "EPFL Partner Universities"
+msgstr "EPFL Partner Universities"
+
+#. Description of the plugin
+msgid "Provides a shortcode to display all partner universities"
+msgstr "Provides a shortcode to display all partner universities"
+
+#. Author of the plugin
+msgid ""
+"Rosa Maggi (Renato Kempter (renato.kempter@gmail.com) 2013 - Tim Brigginshaw "
+"EPFL (tim.brigginshaw@epfl.ch) 2018)"
+msgstr ""
+"Rosa Maggi (Renato Kempter (renato.kempter@gmail.com) 2013 - Tim Brigginshaw "
+"EPFL (tim.brigginshaw@epfl.ch) 2018)"
+
+#: epfl-partner-universities.php:72 epfl-partner-universities.php:147
+msgid "cityLabel"
+msgstr "City"
+
+#: epfl-partner-universities.php:73 epfl-partner-universities.php:148
+msgid "universityLabel"
+msgstr "University"
+
+#: epfl-partner-universities.php:149
+msgid "sectionText"
+msgstr "Section"
+
+#: epfl-partner-universities.php:150
+msgid "remText"
+msgstr "Remarks"
+
+#: epfl-partner-universities.php:151
+msgid "emailContact"
+msgstr "E-mail of the contact person at EPFL"
+
+#: epfl-partner-universities.php:152
+msgid "placeDisponibles"
+msgstr "Number of total available slots"
+
+#: epfl-partner-universities.php:153
+msgid "universityInformation"
+msgstr "More information on the website of the partner university"
+
+#: epfl-partner-universities.php:154
+msgid "fichePDF"
+msgstr "Fact sheet of the partner university (PDF)"
+
+#: epfl-partner-universities.php:349
+msgid "selectFilterText"
+msgstr "All sections"
+
+#: page_list.php:5 partner-universities-utils.php:61
+msgid "regionFilterText"
+msgstr "Region"
+
+#: page_list.php:8 partner-universities-utils.php:60
+msgid "allRegionsText"
+msgstr "All regions"
+
+#: page_list.php:14 partner-universities-utils.php:108
+msgid "countryFilterText"
+msgstr "Country"
+
+#: page_list.php:17 partner-universities-utils.php:109
+msgid "allCountriesText"
+msgstr "All countries"
+
+#: page_list.php:23 partner-universities-utils.php:162
+msgid "townFilterText"
+msgstr "City"
+
+#: page_list.php:26 partner-universities-utils.php:163
+msgid "allCitiesText"
+msgstr "All cities"
+
+#: page_list.php:35 page_map.php:37
+msgid "showAll"
+msgstr "Show all"
+
+#: page_map.php:6 page_map.php:18
+msgid "afriqueId"
+msgstr "africa"
+
+#: page_map.php:7 page_map.php:17
+msgid "europeId"
+msgstr "europe"
+
+#: page_map.php:8 page_map.php:15
+msgid "ameriqueNordId"
+msgstr "north-america"
+
+#: page_map.php:9 page_map.php:16
+msgid "ameriqueSudId"
+msgstr "south-america"
+
+#: page_map.php:10 page_map.php:19
+msgid "asieId"
+msgstr "asia"
+
+#: page_map.php:11 page_map.php:20
+msgid "oceanieId"
+msgstr "oceania"
+
+#: page_map.php:15
+msgid "ameriqueNord"
+msgstr "North-America"
+
+#: page_map.php:16
+msgid "ameriqueSud"
+msgstr "South-America"
+
+#: page_map.php:17
+msgid "europe"
+msgstr "Europe"
+
+#: page_map.php:18
+msgid "afrique"
+msgstr "Africa"
+
+#: page_map.php:19
+msgid "asie"
+msgstr "Asia"
+
+#: page_map.php:20
+msgid "oceanie"
+msgstr "Oceania"
+
+#: page_map.php:25
+msgid "OUTMessage"
+msgstr "If you have any specific questions about these exchange destinations for the 3rd year Bachelor's programme, please write to <a href=\"mailto:sac-exchange-out@epfl.ch\">sac-exchange-out@epfl.ch</a>. Please indicate in the title of your e-mail the country or countries you are enquiring about."
+
+#: page_map.php:44
+msgid "showMap"
+msgstr "View Map"
+
+#: partner-universities-utils.php:219
+msgid "warning"
+msgstr "Warning"
+
+#: partner-universities-utils.php:219
+msgid "errorMessage"
+msgstr "This page is temporarily unavailable – let us know at <a href=\"mailto:1234@epfl.ch\">1234@epfl.ch</a>."
