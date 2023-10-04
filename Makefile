@@ -31,26 +31,6 @@ check-wp:
 check-gettext:
 	@type gettext > /dev/null 2>&1 || { echo >&2 "Please install gettext. Aborting."; exit 1; }
 
-.PHONY: install_phpcs
-## Run linter WordPress
-install_phpcs:
-	@echo '**** install wpcs ****'
-	composer install
-	./vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs
-	./vendor/bin/phpcs --config-set default_standard WordPress-Core
-
-.PHONY: phpcs
-## Run linter phpcs WordPress
-phpcs: install_phpcs
-	@echo '**** run phpcs ****'
-	./vendor/bin/phpcs --standard=WordPress-Core *.php
-
-.PHONY: phpcbf
-## Run linter phpcbf WordPress
-phpcbf: install_phpcs phpcs
-	@echo '**** phpcbf ****'
-	./vendor/bin/phpcbf --standard=WordPress-Core *.php
-
 define JSON_HEADERS
 {"Project-Id-Version": "EPFL Partner Universities $(VERSION)",\
 "Last-Translator": "$(REPO_OWNER_NAME) <$(REPO_OWNER_EMAIL)>",\
