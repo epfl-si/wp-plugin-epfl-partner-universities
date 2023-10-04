@@ -33,6 +33,9 @@ Utility class for all common methods.
 ## How to use shortcode
 [epfl_partner_universities language='FR/EN' exchange='IN/OUT']
 
+## Makefile
+If you add a new string to translate with `_e(keyName, domainName)`, you can do `make pot` to add it on the /languages/epfl_partner_universities.pot and /languages/*.po files where you can translate it.
+
 ## Pages where it's used
 - OUT: https://www.epfl.ch/education/international/en/studying-abroad/bachelor-exchange/partner-universities/
 - IN: https://www.epfl.ch/education/international/en/coming-to-epfl/semester-courses/partner-universities-in/

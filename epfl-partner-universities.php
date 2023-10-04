@@ -2,7 +2,7 @@
 /*
  * Plugin Name:  EPFL Partner Universities
  * Description:  Provides a shortcode to display all partner universities
- * Version:      1.0.2
+ * Version:      1.0.3
  * Author:       Rosa Maggi (Renato Kempter (renato.kempter@gmail.com) 2013 - Tim Brigginshaw EPFL (tim.brigginshaw@epfl.ch) 2018)
  * License: 	 Copyright (c) 2021 Ecole Polytechnique Federale de Lausanne, Switzerland
  * Text Domain:  epfl_partner_universities
