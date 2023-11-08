@@ -2,7 +2,7 @@
 /*
  * Plugin Name:  EPFL Partner Universities
  * Description:  Provides a shortcode to display all partner universities
- * Version:      1.0.3
+ * Version:      1.1
  * Author:       Rosa Maggi (Renato Kempter (renato.kempter@gmail.com) 2013 - Tim Brigginshaw EPFL (tim.brigginshaw@epfl.ch) 2018)
  * License: 	 Copyright (c) 2021 Ecole Polytechnique Federale de Lausanne, Switzerland
  * Text Domain:  epfl_partner_universities
@@ -43,7 +43,6 @@ function epfl_partner_universities_process_shortcode($atts)
             getPartners($partners['response'], $language);
         } else {
             include('page_map.php');
-            getRegions($partners['response'], $language);
             getPartnersMap($utils->hostname, $partners['response'], $language);
             initSectionsFilter($utils, $language);
         }
@@ -171,12 +170,6 @@ function getPartnersMap($hostname, $jdata, $language): void
             var country = (lang == 'fr') ? partners[0].country.name.fr : partners[0].country.name.en;
             row1.append($("<h4></h4>").attr("class", "col-4").text(country));
 
-            // var contact = $("<div></div>").attr("class", "col-4 float-right contact");
-            // var a =$("<a></a>").attr("href", "mailto:" + head.contacts[0].email).attr("class", "button email").attr("title", emailContact);
-            // a.append($("<button></button>").attr("class", "icon-white").text(" "));
-            // a.append($("<span></span>").attr("class", "label text-right").text(head.contacts[0].name));
-            // contact.append(a);
-            //row1.append(contact);
             rel.append(row1);
 
             var row2 = $("<div></div>").attr("class", "row");
@@ -289,38 +282,6 @@ function getPartnersMap($hostname, $jdata, $language): void
             table.append(tbody);
             row2.append($("<div></div>").attr("class", "col-12").append(table));
             rel.append(row2);
-            el.append(rel);
-        });
-    </script>
-    <?php
-}
-
-/**
- * @param $jdata
- * @param $language
- * @description method to create the map page
- * @return void
- */
-function getRegions($jdata, $language): void
-{
-    ?>
-    <script>
-        var lang = <?= json_encode($language, JSON_UNESCAPED_UNICODE); ?>;
-        var jdata = <?php echo $jdata; ?>;
-        var el = $('#map-list').find('#map')
-        var rList = jdata.map(function (d) {
-            return lang == 'fr' ? d.region.name.fr : d.region.name.en
-        });
-        var uniqueArray = [...new Set(rList)];
-
-        uniqueArray.map((region) => {
-            var rel = $("<div></div>").attr("id", translate(region)).attr("tabindex", "0").attr("class", "selection-link country-menu country-hover").attr("href", '#' + translate(region)).attr("data-type", "region");
-
-            /* The menu stores the number of countries - used to activate the map colours (but no longer used as a menu) */
-            var cm = $("<div></div>").attr("class", "country-menu");
-            cm.append($("<span></span>").attr("class", "country-listing").attr("data-type", "country"));
-            rel.append(cm);
-
             el.append(rel);
         });
     </script>
