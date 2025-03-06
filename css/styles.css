@@ -15,7 +15,7 @@
     height: 325px;
     position: relative;
     margin: auto;
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/world.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/world.gif');
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -49,61 +49,61 @@
 
 
 #map #world .africa.active {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/africa.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/africa.gif');
 }
 #map #world .africa.active.hover {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/africa_over.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/africa_over.gif');
 }
 #map #world .europe.active {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/europe.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/europe.gif');
 }
 #map #world .europe.active.hover {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/europe_over.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/europe_over.gif');
 }
 #map #world .amerique-du-nord.active {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/namerica.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/namerica.gif');
 }
 #map #world .amerique-du-nord.active.hover {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/namerica_over.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/namerica_over.gif');
 }
 #map #world .north-america.active {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/namerica.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/namerica.gif');
 }
 #map #world .north-america.active.hover {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/namerica_over.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/namerica_over.gif');
 }
 #map #world .amerique-du-sud.active {
-   background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/samerica.gif');
+   background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/samerica.gif');
 }
 #map #world .amerique-du-sud.active.hover {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/samerica_over.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/samerica_over.gif');
 }
 #map #world .south-america.active {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/samerica.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/samerica.gif');
 }
 #map #world .south-america.active.hover {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/samerica_over.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/samerica_over.gif');
 }
 #map #world .asie.active {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/asia.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/asia.gif');
 }
 #map #world .asie.active.hover {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/asia_over.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/asia_over.gif');
 }
 #map #world .asia.active {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/asia.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/asia.gif');
 }
 #map #world .asia.active.hover {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/asia_over.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/asia_over.gif');
 }
 #map #world .oceanie.active {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/australia.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/australia.gif');
 }
 #map #world .oceanie.active.hover {
     background: url('https://www.epfl.ch//education/mobility/wp-content/uploads/2018/12/australia_over.gif');
 }
 #map #world .oceania.active {
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/australia.gif');
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/australia.gif');
 }
 #map #world .oceania.active.hover {
     background: url('https://www.epfl.ch//education/mobility/wp-content/uploads/2018/12/australia_over.gif');
@@ -410,7 +410,7 @@ ul {
     height: 22px;
     border: none;
     cursor: pointer;
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/icons.png') no-repeat;
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/icons.png') no-repeat;
     background-position: 0 0;
 }
 
@@ -426,7 +426,7 @@ ul {
     height: 22px;
     border: none;
     cursor: pointer;
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/icons.png') no-repeat;
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/icons.png') no-repeat;
     background-position: 0 -40px;
     margin-top: 3px;
 }
@@ -436,7 +436,7 @@ ul {
     height: 22px;
     border: none;
     cursor: pointer;
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/icons.png') no-repeat;
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/icons.png') no-repeat;
     background-position: 0 -22px;
 }
 .more-info .information .icon-white {
@@ -450,7 +450,7 @@ ul {
     height: 22px;
     border: none;
     cursor: pointer;
-    background: url('https://www.epfl.ch/education/mobility/wp-content/uploads/2018/12/icons.png') no-repeat;
+    background: url('https://www.epfl.ch/education/international/wp-content/uploads/2018/12/icons.png') no-repeat;
     background-position: 0 -62px;
 }
 
