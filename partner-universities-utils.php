@@ -39,7 +39,6 @@ class PartnerUniversitiesUtils
 
 		$result['response'] = curl_exec($curl);
 		$result['httpCode'] = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		curl_close($curl);
 		return $result;
 	}
 
