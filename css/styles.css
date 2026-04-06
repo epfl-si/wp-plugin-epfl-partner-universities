@@ -391,6 +391,7 @@
 .region-selection,
 .country-selection,
 .city-selection {
+	width: auto !important;
     margin-right: 5px;
 }
 
